@@ -73,7 +73,7 @@ Shortlist lấy từ cụm có bottleneck rõ và có số liệu nhất (cụm 
 - Actor (Junior AI Engineer phụ trách đánh giá RAG) và quy trình (eval hằng tuần, gán nhãn, báo cáo, chọn việc sửa trước planning) đều rõ.
 - Pain có số liệu: khoảng 60 câu sai mỗi lần, khoảng 60/130 phút, nhãn lệch giữa các lần gán.
 - Impact đo được trực tiếp bằng thời gian gán nhãn và độ nhất quán nhãn.
-- - Dễ dựng đủ 4 mức để so sánh: không dùng AI (gán tay), rule (từ khóa, metric), workflow (LLM gán nhãn theo bảng nguyên nhân cố định), agent.
+- Dễ dựng đủ 4 mức để so sánh: không dùng AI (gán tay), rule (từ khóa, metric), workflow (LLM gán nhãn theo bảng nguyên nhân cố định), agent.
 - Nhóm hiểu domain vì Hưng là người trực tiếp làm việc này.
 - Phản biện "chỉ xem metric tổng có đủ không?" (Bảo) có thể trả lời bằng chính baseline *rule*: metric tổng cho biết sai bao nhiêu, nhưng không cho biết sai vì đâu.
 

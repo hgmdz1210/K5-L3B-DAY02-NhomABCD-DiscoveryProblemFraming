@@ -141,34 +141,85 @@ Sơ đồ (ASCII, Mermaid hoặc link ảnh trong `report/assets/`):
 ```text
 
 ```
+```mermaid
+flowchart TD
+    A["1. Chạy evaluation 300 câu<br/>10 phút"]
+    B["2. Tính metric tổng<br/>10 phút"]
+    C["3. Lọc các câu sai<br/>10 phút"]
+    D["4. Đọc từng câu sai và gán nguyên nhân<br/>60 phút"]
+    E["5. Gom nhóm, đếm tỷ lệ và chọn lỗi ưu tiên<br/>15 phút"]
+    F["6. Viết báo cáo và đề xuất sửa<br/>20 phút"]
+    G["7. Review, gửi và trả lời câu hỏi<br/>5 phút"]
 
+    A --> B --> C --> D --> E --> F --> G
+
+    style D fill:#FCE4D6,stroke:#D97706,stroke-width:2px
+```
 | Bước | Actor | Input | Output | Thời gian / tần suất | Ghi chú |
 |---:|---|---|---|---|---|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
+| 1 | Khoa / Script | Dataset 300 câu, model và cấu hình evaluation | Kết quả evaluation | 10 phút/lần | Chạy và chờ xuất kết quả |
+| 2 | Khoa | Kết quả evaluation | Các metric tổng hợp | 10 phút/lần | Tính bằng Sheets hoặc script rời |
+| 3 | Khoa | Kết quả evaluation | Danh sách câu trả lời sai | 10 phút/lần | Lọc các trường hợp lỗi |
+| 4 | Khoa | Câu sai, câu hỏi gốc, expected answer, actual answer, trace | Danh sách câu sai được gán nguyên nhân | 60 phút/lần | **Bottleneck chính** |
+| 5 | Khoa | Danh sách lỗi đã gán nguyên nhân | Bảng nhóm lỗi, tỷ lệ và lỗi ưu tiên | 15 phút/lần | Tổng hợp thủ công |
+| 6 | Khoa | Metrics và bảng thống kê lỗi | Báo cáo và đề xuất sửa | 20 phút/lần | Viết báo cáo thủ công |
+| 7 | Khoa | Báo cáo dự thảo | Báo cáo hoàn chỉnh | 5 phút/lần | Review, gửi và trả lời câu hỏi |
 
-**Bottleneck chính:**
+**Bottleneck chính:** Bước 4 – Đọc từng câu trả lời sai và gán nguyên nhân, mất 60 phút, chiếm khoảng 46,15% tổng thời gian.
 
 ### 4.2. Quy trình tương lai
 
-Ghi rõ bước nào **Rule**, bước nào **AI**, bước nào **con người**, **boundary** ở đâu, **phương án quay về** khi AI sai.
+### Sơ đồ quy trình
 
-```text
+```mermaid
+flowchart TD
+    A["1. Chạy eval và tính metric<br/>RULE – 3 phút"]
+    B["2. AI gợi ý nhãn và trích dẫn trace<br/>AI – 2 phút"]
+    C["3. Khoa duyệt và sửa nhãn<br/>HUMAN – 25 phút"]
+    D["4. Gom nhóm và đếm tỷ lệ<br/>RULE – 3 phút"]
+    E["5. AI soạn nháp báo cáo<br/>AI – 1 phút"]
+    F["6. Khoa kiểm số, sửa nháp và chọn ưu tiên<br/>HUMAN – 12 phút"]
+    G["7. Khoa gửi báo cáo<br/>HUMAN – 2 phút"]
 
+    A --> B --> C --> D --> E --> F --> G
+
+    H["Fallback:<br/>Google Sheets + Dropdown<br/>và script tổng hợp hiện tại"]
+    B -. "AI sai / thiếu bằng chứng" .-> H
+    H -. "Quay lại quy trình thủ công" .-> C
+
+    style C fill:#DBEAFE,stroke:#2563EB,stroke-width:2px
+    style F fill:#DBEAFE,stroke:#2563EB,stroke-width:2px
+    style H fill:#FCE4D6,stroke:#D97706,stroke-width:2px
 ```
+
+### Boundary
+
+- AI chỉ sử dụng dữ liệu được cung cấp.
+- AI chỉ gợi ý nhãn thuộc danh sách nhãn cố định.
+- AI phải trích dẫn bằng chứng từ trace gốc; không được tự tạo bằng chứng.
+- AI không tự tính số liệu thống kê.
+- AI không tự gửi báo cáo.
+- AI không tự thay đổi prompt hoặc pipeline.
+- Khoa có quyền chấp nhận, sửa hoặc từ chối mọi nhãn do AI đề xuất.
+
+### Phương án quay về (Fallback)
+
+Nếu AI gán nhãn sai nhiều, bằng chứng không hợp lệ hoặc chất lượng báo cáo không đạt yêu cầu:
+
+1. Dừng sử dụng gợi ý AI.
+2. Chuyển sang Google Sheets có dropdown để Khoa tự gán nhãn.
+3. Sử dụng script hiện tại để tổng hợp số liệu.
+4. Khoa tiếp tục viết và review báo cáo theo quy trình thủ công.
 
 ### 4.3. Before / after
 
 | Chỉ số | Trước | Sau (kỳ vọng) | Ghi chú |
 |---|---:|---:|---|
-| Số bước | | | |
-| Tổng thời gian | | | |
-| Số bước thủ công | | | |
-| Bottleneck chính | | | |
-| Rủi ro mới phát sinh | | | |
+| Số bước |7 |7 | Không loại bỏ bước nghiệp vụ |
+| Tổng thời gian |130 phút |48 phút |Giảm 82 phút, tương đương 63,08% |
+| Số bước thủ công |7/7 |3/7 | Người trực tiếp làm chính ở bước 3, 6, 7 |
+| Bottleneck chính |Gán nguyên nhân (60 phút) |Duyệt nhãn (25 phút) |Chuyển từ phân loại thủ công sang kiểm duyệt AI |
+| Rủi ro mới phát sinh |Sai sót khi phân loại thủ công |AI gán nhãn sai, bằng chứng không hợp lệ, Khoa duyệt qua loa |Cần pilot và Blind Review |
 
 ---
 

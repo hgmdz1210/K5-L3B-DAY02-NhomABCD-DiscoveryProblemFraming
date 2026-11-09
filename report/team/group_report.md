@@ -59,19 +59,33 @@ Những ý đã gạch bỏ vì là solution đội lốt opportunity:
 
 ### 2.4. Chấm điểm shortlist (1–5)
 
+Shortlist lấy từ cụm có bottleneck rõ và có số liệu nhất (cụm A và D): **#4, #2, #1**.
+
 | Candidate | Actor rõ | Quy trình rõ | Pain có bằng chứng | Impact đo được | Vừa sức lab | So sánh được No AI/Rule/Workflow/Agent | Nhóm hiểu domain | Tổng |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| | | | | | | | | |
-| | | | | | | | | |
-| | | | | | | | | |
+| #4 Phân loại nguyên nhân câu sai sau eval RAG hằng tuần | 5 | 5 | 4 | 5 | 4 | 5 | 5 | 33 |
+| #2 Phân tích khen/chê từ bình luận, tin nhắn | 5 | 4 | 4 | 4 | 4 | 4 | 3 | 28 |
+| #1 Hỏi database bằng ngôn ngữ tự nhiên | 4 | 4 | 4 | 4 | 3 | 4 | 2 | 25 |
 
-**Candidate được chọn:**
+**Candidate được chọn:** #4, phân loại nguyên nhân các câu sai sau eval RAG hằng tuần
 
 **Vì sao chọn:**
+- Actor (Junior AI Engineer phụ trách đánh giá RAG) và quy trình (eval hằng tuần, gán nhãn, báo cáo, chọn việc sửa trước planning) đều rõ.
+- Pain có số liệu: khoảng 60 câu sai mỗi lần, khoảng 60/130 phút, nhãn lệch giữa các lần gán.
+- Impact đo được trực tiếp bằng thời gian gán nhãn và độ nhất quán nhãn.
+- - Dễ dựng đủ 4 mức để so sánh: không dùng AI (gán tay), rule (từ khóa, metric), workflow (LLM gán nhãn theo bảng nguyên nhân cố định), agent.
+- Nhóm hiểu domain vì Hưng là người trực tiếp làm việc này.
+- Phản biện "chỉ xem metric tổng có đủ không?" (Bảo) có thể trả lời bằng chính baseline *rule*: metric tổng cho biết sai bao nhiêu, nhưng không cho biết sai vì đâu.
 
 **Vì sao loại các candidate còn lại:**
+- **#2 (khen/chê bình luận):** pain có thật nhưng công cụ social listening đã phân loại cảm xúc (phản biện của Hưng), nên khó chứng minh giá trị tăng thêm. Nhóm cũng hiểu domain marketing yếu hơn.
+- **#1 (hỏi database):** giá trị lớn nhưng rủi ro "số sai mà người dùng không biết" (phản biện của Ly) đòi hỏi cơ chế kiểm chứng riêng. Ngoài ra còn cần quyền truy cập schema và dữ liệu, khó vừa sức lab.
+- **Cụm B (#5, #7, #9):** phụ thuộc chất lượng log và tài liệu hiện có, chưa chắc đủ dữ liệu để tái hiện lỗi; #9 có thể giải quyết bằng chuẩn hóa tài liệu onboarding.
+- **Cụm C (#8, #10, #11, #12):** chưa có số liệu bottleneck rõ, nhiều nhu cầu giải quyết được bằng chuẩn hóa lưu trữ hoặc dashboard mà không cần AI.
+- **#3 (quy tắc thương hiệu):** phản biện "checklist 1 trang có đủ không?" (Việt Anh) chưa được trả lời, nhiều khả năng giải pháp No AI/Rule đã đủ.
+- **#6 (tạo eval set từ ticket):** ticket chứa thông tin khách hàng, nhóm chưa rõ quyền sử dụng và dễ trượt thành dự án xử lý dữ liệu cá nhân quá lớn cho thời gian của lab.
 
-**Xử lý bất đồng (nếu có):**
+**Xử lý bất đồng (nếu có):** Chưa ghi nhận bất đồng nào ở bước này. Nếu nhóm có ý kiến khác (ví dụ ai đó muốn chọn #1 hoặc #2), sẽ ghi lại ý kiến, lý do, và cách nhóm thống nhất (ví dụ đưa vào mục hướng tiếp theo vì chưa có baseline đo được).
 
 ---
 

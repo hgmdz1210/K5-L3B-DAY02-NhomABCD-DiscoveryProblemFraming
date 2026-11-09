@@ -163,18 +163,19 @@ Ghi rõ bước nào **Rule**, bước nào **AI**, bước nào **con người*
 
 ---
 
-## 5. Problem Statement v0 (CP5)
-
+  ## 5. Problem Statement v0 (CP5)
+  
 | Trường | Nội dung |
-|---|---|
-| **Actor** | |
-| **Quy trình** | |
-| **Bottleneck** | |
-| **Impact** | |
-| **Success Metric** (baseline → target, cách đo) | |
-| **Boundary** (AI không được làm gì; khi nào cần con người kiểm tra — HITL) | |
+| --- | --- |
+| **Actor** | Kỹ sư AI (junior) phụ trách đánh giá hệ thống RAG hằng tuần cho Tech Lead và PM |
+| **Quy trình** | Mỗi chiều thứ Hai: chạy eval, tính metric, lọc câu sai, đọc và gán nhãn nguyên nhân, gom nhóm, viết báo cáo, review và gửi |
+| **Bottleneck** | Đọc và gán nhãn khoảng 60 câu sai mất khoảng 60 phút, và nhãn không nhất quán giữa các lần gán |
+| **Impact** | 130 phút/tuần/kỹ sư; 4/10 tuần gần nhất báo cáo đến sau planning; 6/20 câu gán lại ra nhãn khác, nên việc ưu tiên sửa có thể dựa trên nhãn lệch |
+| **Success Metric** | Tổng thời gian từ 130 phút (bấm giờ 2 tuần) xuống dưới 60 phút, đo bằng tự ghi giờ 4 tuần pilot |
+| **Boundary** | AI không tự sửa prompt hay pipeline, không tự gửi, không đặt nhãn ngoài danh sách, không thay người duyệt |
 
-Phản biện nhận được (từ AI hoặc nhóm khác) và nhóm có đồng ý không:
+**Phản biện nhận được:** AI chỉ ra metric chỉ đo tốc độ. Báo cáo nhanh hơn nhưng nhãn sai thì nhóm sửa sai chỗ cả tuần. Nhóm đồng ý và thêm metric chất lượng ở v1.
+
 
 -
 
@@ -222,30 +223,45 @@ Vì sao:
 ## 7. Problem Statement v1 + tiêu chí đánh giá (CP6)
 
 | Trường | Nội dung |
-|---|---|
-| **Actor** | |
-| **Quy trình** | |
-| **Bottleneck** | |
-| **Impact** | |
-| **Success Metric** (baseline → target, cách đo) | |
-| **Boundary** | |
-| **AI intervention point** | |
-| **Mức chọn** | No AI / Rule / Workflow / Agent |
-| **Rủi ro & người kiểm tra** | |
-
-**Thay đổi so với v0 và lý do:**
+| --- | --- |
+| **Actor** | Kỹ sư AI (junior) phụ trách đánh giá hệ thống RAG hằng tuần, ở team có từ 20 câu sai/tuần trở lên và cần biết nguyên nhân |
+| **Quy trình** | Chạy eval, lọc câu sai, gán nhãn nguyên nhân, gom nhóm, viết báo cáo, gửi |
+| **Bottleneck** | Đọc và gán nhãn khoảng 60 câu sai mất khoảng 60 phút; nhãn lệch giữa các lần gán |
+| **Impact** | 130 phút/tuần/kỹ sư; 4/10 tuần báo cáo đến sau planning |
+| **Success Metric** | (1) Thời gian từ 130 xuống dưới 60 phút; (2) nhãn AI gợi ý trùng nhãn cuối của Khoa từ 80% số câu trở lên (thí nghiệm ban đầu: 85%); (3) số câu hỏi lại của Tech Lead và PM không tăng so với 4 tuần trước pilot |
+| **Boundary** | AI không tự sửa prompt hay pipeline, không tự gửi, không đặt nhãn ngoài danh sách, không đưa nhận định không có trong dữ liệu |
+| **AI intervention point** | Sau khi lọc câu sai, trước khi Khoa đọc từng câu |
+| **Mức chọn** | Workflow |
+| **Rủi ro và người kiểm tra** | Nhãn sai, bằng chứng bịa, duyệt qua loa → Khoa duyệt từng nhãn và đối chiếu đoạn trace; trong pilot, mỗi tuần 10 câu ẩn nhãn AI để Khoa tự gán rồi đối chiếu |
 
 | Trường | v0 | v1 | Vì sao đổi |
-|---|---|---|---|
-| | | | |
+| --- | --- | --- | --- |
+| Actor | Kỹ sư AI phụ trách đánh giá RAG hằng tuần | Thêm: team có từ 20 câu sai/tuần và cần biết nguyên nhân | Phỏng vấn: có team chỉ nhìn metric tổng, với họ No AI là đủ |
+| Success Metric | Chỉ đo thời gian | Thêm tỉ lệ trùng nhãn và số câu hỏi lại | Phản biện: nhanh hơn nhưng nhãn sai thì không đạt |
 
-**Tiêu chí đánh giá đầu ra của AI (3–5 tiêu chí):**
+### Danh sách nhãn nguyên nhân v1 (8 nhãn)
+
+Ra từ việc Khoa đọc và ghi chú tự do 50 câu sai trước, rồi gom nhóm (open coding rồi axial coding).
+
+| Nhãn | Định nghĩa ngắn |
+| --- | --- |
+| Retrieval bỏ sót | Tài liệu đúng có trong kho nhưng không nằm trong các đoạn được truy xuất |
+| Tài liệu nguồn thiếu hoặc cũ | Kho không có thông tin đúng, hoặc thông tin đã lỗi thời |
+| Chunking cắt mất ngữ cảnh | Đoạn truy xuất đúng tài liệu nhưng thiếu phần cần để trả lời |
+| Prompt hoặc hướng dẫn mơ hồ | Ngữ cảnh đủ nhưng mô hình trả lời sai định dạng, sai phạm vi hoặc bỏ điều kiện |
+| Bịa dù ngữ cảnh đủ | Câu trả lời có nội dung không nằm trong ngữ cảnh |
+| Câu hỏi ngoài phạm vi | Bot lẽ ra phải từ chối |
+| Đáp án tham chiếu sai hoặc cũ | Lỗi nằm ở bộ eval chứ không phải hệ thống |
+| Không chắc | Chưa đủ cơ sở; để Khoa xem kỹ |
+
+### Tiêu chí đánh giá gợi ý nhãn và nháp báo cáo
 
 | # | Tiêu chí | Đạt khi | Không đạt khi |
-|---:|---|---|---|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
+| --: | --- | --- | --- |
+| 1 | Nhãn thuộc danh sách | Mọi nhãn nằm trong 8 nhãn; không chắc thì dùng "Không chắc" | AI tự đặt nhãn mới |
+| 2 | Bằng chứng truy được | Mỗi nhãn kèm đoạn trace hoặc tài liệu có trong input | Bằng chứng không có trong input |
+| 3 | Đúng ở nhóm lỗi lớn | Top 3 nhóm lỗi theo nhãn AI trùng top 3 theo nhãn đã duyệt của Khoa | Sai thứ tự hoặc thiếu nhóm trong top 3 |
+| 4 | Báo cáo đọc được trong 3 phút | Dưới 300 từ, đủ 3 phần (kết quả tổng, top nguyên nhân kèm tỉ lệ, đề xuất sửa); số liệu khớp script | Dài, lan man, thiếu phần, hoặc có số AI tự tính |
 
 ---
 

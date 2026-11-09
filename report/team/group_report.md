@@ -35,9 +35,10 @@
 
 | Cluster | Các candidate | Pattern chung |
 |---|---|---|
-| A | | |
-| B | | |
-| C | | |
+| A | #2, #4, #6 | Phân loại và gắn nhãn văn bản hàng loạt |
+| B | #5, #7, #9 | Tìm kiếm và nắm ngữ cảnh trong tri thức hoặc code phân tán |
+| C | #8, #10, #11, #12 | Tổng hợp và đối chiếu nhiều nguồn hoặc nhiều lần chạy để ra quyết định |
+| D | #1, #3 | Giảm vòng chờ và kiểm tra lặp lại giữa người không chuyên và người chuyên môn |
 
 ### 2.3. Opportunity Solution Tree rút gọn
 

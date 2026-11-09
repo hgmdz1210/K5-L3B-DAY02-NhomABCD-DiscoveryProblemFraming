@@ -18,9 +18,9 @@
 
 | # | Người đưa ra | Candidate (Job Story ngắn) | Actor | Bottleneck | Câu hỏi phản biện nhận được (ai hỏi) |
 |---:|---|---|---|---|---|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
+| 1 | Bảo | Khi cần một con số từ database, tôi muốn hỏi bằng ngôn ngữ tự nhiên, để không phải chờ team data | Marketing Executive, không biết SQL. Quy trình hiện tại: 1. Xác định cần số gì, định nghĩa ra sao · 2. Tạo ticket hoặc nhắn Slack cho team data · 3. Chờ analyst nhận việc · 4. Analyst hỏi lại 2–3 câu làm rõ (khoảng thời gian, định nghĩa "đăng ký", kênh nào) · 5. Marketing Executive trả lời, chờ tiếp · 6. Analyst viết query, chạy, gửi kết quả · 7. Marketing Executive kiểm tra bằng mắt xem số có hợp lý không, rồi đưa vào báo cáo | Bước 3–5, chờ và hỏi đi hỏi lại: trung bình 2 ngày từ lúc gửi yêu cầu tới lúc nhận số, trong khi analyst chỉ mất 10–15 phút để viết query ||
+| 2 | Bảo | Khi có hàng trăm bình luận và tin nhắn về sản phẩm, tôi muốn biết khách đang khen và phàn nàn điều gì, để điều chỉnh nội dung và báo lại cho team sản phẩm | Marketing Executive phụ trách fanpage và quảng cáo. Quy trình hiện tại: 1. Xuất bình luận và tin nhắn từ Facebook, Instagram, inbox · 2. Đọc từng bình luận · 3. Gắn nhãn khen/chê theo chủ đề (size, chất vải, giá, giao hàng) trong Google Sheets · 4. Đếm các chủ đề lặp lại nhiều nhất · 5. Chọn vài bình luận tiêu biểu làm dẫn chứng · 6. Viết tóm tắt gửi team sản phẩm · 7. Điều chỉnh nội dung quảng cáo theo phản hồi | Bước 2–3, đọc và gắn nhãn tay: 300+ bình luận/tuần, khoảng 90 phút, dễ bỏ sót hoặc gắn nhãn không nhất quán giữa các tuần | |
+| 3 | Bảo | Khi Marketing Manager duyệt nội dung, họ muốn thấy bản nháp đã đúng quy tắc thương hiệu, để không phải sửa cùng một lỗi nhiều lần | Marketing Executive (người viết) và Marketing Manager (người duyệt). Quy trình hiện tại: 1. Viết bản nháp bài/caption · 2. Tự kiểm tra sơ bộ theo trí nhớ về quy tắc thương hiệu · 3. Gửi Marketing Manager duyệt · 4. Chờ duyệt · 5. Marketing Manager trả lại kèm comment (sai tone, thiếu thông tin bắt buộc, sai cách xưng hô) · 6. Marketing Executive sửa · 7. Gửi duyệt lại, chờ rồi mới đăng | Bước 3–7, vòng duyệt lặp lại: 40% bài bị trả lại vì sai tone hoặc thiếu thông tin bắt buộc, mỗi lần trả lại mất thêm nửa ngày và làm trễ lịch đăng | |
 | 4 | | | | | |
 | 5 | | | | | |
 | 6 | | | | | |

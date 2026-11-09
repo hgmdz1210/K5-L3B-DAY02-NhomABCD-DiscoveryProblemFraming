@@ -79,48 +79,57 @@ Những ý đã gạch bỏ vì là solution đội lốt opportunity:
 
 | # | Giả định | Loại (Value / Usability / Feasibility / Viability) | Quan trọng (1–5) | Đã có bằng chứng (1–5) | Kiểm chứng trước? |
 |---:|---|---|---:|---:|---|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
-| 6 | | | | | |
-
-*Điền 4–6 giả định; xóa dòng thừa.*
+| 1 |Kỹ sư khác cũng mất trên 60 phút/tuần để phân tích lỗi eval| Value |5 |2 |Có |
+| 2 |Bước tốn nhất là đọc và gán nhãn từng câu sai, không phải chạy eval |Value |5 |2 |Có |
+| 3 |Danh sách nguyên nhân lỗi đủ ổn định giữa các tuần để AI gán nhãn theo danh sách cố định  |Value |4 |1 |có|
+| 4 |LLM gán nhãn trùng với người từ 80% trở lên |Feasibility |5 |1 |Có (thí nghiệm 40 câu) |
+| 5 |Kết quả eval xuất được ra JSON để đưa vào script |Feasibility |4 |4 |Không |
+| 6 |Công ty cho phép gửi nội dung câu hỏi và tài liệu nội bộ vào API LLM bên ngoài |Viability |5 |2 | Hỏi Tech Lead sau lab |
 
 Giả định nhóm kiểm chứng trong buổi này:
 
 ### 3.2. Kiểm chứng
-
-Cách đã dùng: Phỏng vấn / Survey / Log, ticket, review
-
-Interview snapshot (mỗi buổi phỏng vấn một bảng, hoặc đặt file trong `report/assets/cp4-interview-snapshot-N.md`):
+Nhóm phỏng vấn 3 kỹ sư AI/ML quen biết (theo The Mom Test), làm poll 6 người trong lớp, và chạy một thí nghiệm nhỏ để kiểm giả định #4. **Dữ liệu phỏng vấn, poll và thí nghiệm dưới đây là hư cấu để minh họa.**
 
 | Trường | Nội dung |
 |---|---|
-| Người được hỏi (vai trò, không ghi tên thật) | |
-| Câu nói đáng nhớ nhất (nguyên văn) | |
-| Lần gần nhất gặp vấn đề này: chuyện gì đã xảy ra? | |
-| Hiện đang xử lý bằng cách nào (workaround)? | |
-| Mất bao lâu, bao lần? | |
-| Insight / opportunity rút ra | |
+| Người được hỏi (vai trò, không ghi tên thật) |ML Engineer, công ty thương mại điện tử khoảng 300 người |
+| Câu nói đáng nhớ nhất (nguyên văn) |"Chạy eval thì máy làm. Cái mình ngồi lâu là đọc từng câu sai rồi đoán lỗi nằm ở retrieval hay ở prompt."|
+| Lần gần nhất gặp vấn đề này: chuyện gì đã xảy ra? |Thứ Năm tuần trước, sau khi đổi embedding model, đọc 80 câu sai mất khoảng 1,5 giờ |
+| Hiện đang xử lý bằng cách nào (workaround)? |Google Sheets có cột nhãn, nhưng hay quên định nghĩa của từng nhãn |
+| Mất bao lâu, bao lần? |1–2 lần/tuần sau mỗi thay đổi lớn |
+| Insight / opportunity rút ra |Pain nằm ở việc đọc và gán nhãn, và định nghĩa nhãn bị trôi theo thời gian |
 
 Tổng hợp:
 
 | Nguồn | Số người / số mẫu | Tín hiệu xác nhận | Tín hiệu phản bác |
 |---|---:|---|---|
-| | | | |
+| Phỏng vấn | 3 | 2/3 mất nhiều thời gian nhất ở việc đọc và gán nhãn câu sai | 1 người nói chỉ cần nhìn metric tổng (faithfulness, recall) để quyết định, không đọc từng câu |
+| Poll trong lớp | 6 | 4/6 từng phân tích lỗi mô hình hoặc RAG thủ công hơn 1 giờ | 2/6 nói metric tổng là đủ |
+| Thí nghiệm gán nhãn (LLM so với Khoa) | 40 + 40 câu sai | Với danh sách nhãn ban đầu, trùng 29/40 (72,5%). Sau khi thêm định nghĩa và 2 ví dụ cho mỗi nhãn, trùng 34/40 (85%) trên 40 câu mới | 11/40 câu lệch nhãn ở lần đầu, hay lẫn giữa "retrieval bỏ sót" và "tài liệu nguồn thiếu"; 15% vẫn sai sau khi chỉnh |
 
-**Nhóm đã sửa problem thế nào sau kiểm chứng:**
+**Nhóm đã sửa problem thế nào sau kiểm chứng:**thu hẹp từ "tự động hóa error analysis" thành "**gợi ý nhãn nguyên nhân theo danh sách cố định và soạn nháp báo cáo, người duyệt từng nhãn**". Thí nghiệm cho thấy 85% đủ để làm gợi ý nhưng chưa đủ để thay người. Thêm phương án không dùng AI cho team chỉ cần metric tổng. Giả định #3 (danh sách nhãn ổn định) vẫn chưa đủ bằng chứng.
 
 ### 3.3. Research giải pháp đã có
 
 | Công cụ / case / pattern | Link | Giải bước nào trong quy trình? | Điểm mạnh | Khoảng trống / rủi ro | Bài học cho nhóm |
 |---|---|---|---|---|---|
-| | | | | | |
-| | | | | | |
-| | | | | | |
+| [Langfuse: annotation queues và LLM-as-a-Judge]|(https://langfuse.com/docs/evaluation/evaluation-methods/annotation-queues), cùng [hướng dẫn error analysis](https://langfuse.com/blog/2025-08-29-error-analysis-to-evaluate-llm-applications) | Bước 3–5: duyệt và gán nhãn câu sai, gom nhóm, theo dõi bằng score | Có hàng đợi để duyệt trace; ghi chú tự do trước rồi gom thành nhóm lỗi ổn định. Bản tháng 8/2025 của hướng dẫn gợi ý bắt đầu với 50–100 trace đa dạng (trang hiện tại chỉ nói cần mẫu đại diện, không nêu số). Trang annotation queue nói dùng nhãn của người để căn chỉnh LLM judge | Phải đưa dữ liệu vào dưới dạng trace hoặc dataset (Khoa đang dùng JSONL, tốn công chuyển). Judge nên dựa trên nhóm lỗi đã biết, nên vẫn cần bước đọc dữ liệu trước | Danh sách nhãn phải rút ra từ việc đọc dữ liệu thật trước. LLM chỉ nên gán nhãn theo danh sách đó và phải đối chiếu với nhãn người |
+| [LangSmith Insights Agent] |(https://docs.langchain.com/langsmith/insights) | Bước 4–5: tự gom trace thành nhóm failure mode, không cần định nghĩa trước | Phát hiện nhóm lỗi chưa biết và xuất báo cáo theo cụm; có thể lọc theo tín hiệu như phản hồi xấu của người dùng ([thông báo 10/2025](https://blog.langchain.com/insights-agent-multiturn-evals-langsmith)) | Khi công bố chỉ có cho gói Plus và Enterprise cloud, cần kiểm lại gói hiện tại. Một blog của đối thủ ([Latitude](https://latitude.so/blog/langsmith-alternatives-agent-observability-2026)) nhận xét chưa có vòng đời issue và theo dõi tần suất; đọc dè dặt vì họ cạnh tranh | Hữu ích để khám phá nhóm lỗi mới, nhưng phụ thuộc gói trả phí và dữ liệu phải nằm trong LangSmith. Không thay bước người duyệt |
+| [Arize Phoenix] |(https://phoenix.arize.com) | Bước 3–4: tracing, evaluator, clustering embedding để cô lập chỗ kém | Mã nguồn mở, tự host, dựa trên OpenTelemetry, chạy được trong notebook | Giấy phép Elastic License 2.0 chứ không phải giấy phép OSI; mặc định xác thực tắt và lưu trace không giới hạn, trong khi trace chứa prompt và tài liệu truy xuất (theo [một radar công nghệ bên thứ ba](https://rubinlake.com/fr/technology-radar/data-platforms-and-mlops/arize-phoenix)) | Phù hợp nếu chính sách dữ liệu không cho gửi trace ra ngoài. Nhớ bật xác thực và đặt thời hạn lưu |
+| [Ragas] |(https://docs.ragas.io) | Bước 2–3: tính metric Faithfulness, Response Relevancy, Context Precision, Context Recall (trang chủ tài liệu còn liệt kê Context Entities Recall và Noise Sensitivity) để lọc câu sai | Bộ metric phổ biến cho RAG, chạy được trong notebook hoặc batch | Cho biết điểm thấp, không nói nguyên nhân; context recall cần đáp án tham chiếu; mỗi metric gọi LLM nhiều lần mỗi mẫu, một nguồn bên thứ ba ước tính 100 mẫu cần khoảng 200–600 lần gọi API 
+|([rhumb.dev]|(https://rhumb.dev/service/ragas)) | Dùng cho bước tính metric (Rule). Bước nguyên nhân vẫn cần danh sách nhãn và người duyệt. Tính trước chi phí gọi API |
 
+**Kết luận research:**
+
+```text
+Phần metric và log đã có công cụ. Phần "nguyên nhân lỗi" cần danh sách nhãn rút ra từ dữ liệu thật.
+Hướng hợp lý: Rule tính metric → lọc câu sai → AI gợi ý nhãn theo danh sách cố định
+→ Khoa duyệt từng nhãn → AI soạn nháp báo cáo → Khoa gửi.
+Không tự xây nền tảng observability: pilot dùng Sheets và script; cần giao diện duyệt thì dùng Langfuse hoặc Phoenix.
+```
+
+Đây là điểm khác lớn nhất so với ý ban đầu của Khoa: lúc đầu Khoa định "xây công cụ tự động phân loại lỗi hoàn toàn và vẽ dashboard".
 ---
 
 ## 4. Quy trình trước/sau (CP5)

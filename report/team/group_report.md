@@ -45,15 +45,17 @@
 Gốc là **1 outcome**. Nhánh là **opportunity** (nhu cầu, pain), không phải tính năng hay công cụ.
 
 ```text
-OUTCOME: 
-├── Opportunity A: 
-├── Opportunity B: 
-└── Opportunity C: 
+OUTCOME: Giảm thời gian người vận hành dành cho đọc và gán nhãn văn bản mỗi tuần, mà vẫn giữ nhãn nhất quán và không bỏ sót nguyên nhân hay chủ đề chính
+├── Opportunity A: Phải đọc và gán nhãn thủ công khối lượng văn bản lớn mỗi tuần (~60 câu sai RAG, 300+ bình luận)
+├── Opportunity B: Nhãn không nhất quán giữa các tuần và giữa các lần gán, khiến kết quả khó so sánh
+└── Opportunity C: Chưa rõ kết quả phân loại có thực sự được dùng để chọn việc sửa hoặc báo lại cho team khác không
 ```
 
 Những ý đã gạch bỏ vì là solution đội lốt opportunity:
-
--
+- Dashboard tự động phân loại lỗi (là công cụ, không phải nhu cầu).
+- Agent tự sửa prompt sau khi phân loại (là giải pháp, vượt quá phạm vi pain).
+- Dùng công cụ social listening có sẵn (là công cụ cụ thể, không phải nhu cầu).
+- "Hỏi database bằng ngôn ngữ tự nhiên" (#1) và "kiểm tra bản nháp bằng AI" (#3) khi viết ở dạng này. Pain thật bên dưới là *chờ người chuyên môn* và *vòng duyệt lặp lại*, thuộc cụm D chứ không thuộc outcome này.
 
 ### 2.4. Chấm điểm shortlist (1–5)
 

@@ -14,7 +14,7 @@
 |---:|---|---|---|---|
 | 1 | Đoàn Sỹ Hưng | 2A202603990 | Trưởng nhóm | https://github.com/hgmdz1210 |
 | 2 | Trần Việt Anh | 2A202604029 | Phụ trách kiểm chứng | https://github.com/Vietzanh |
-| 3 | Từ Huy Bảo| 2A202604021 | Thành viên | thbao4545 |
+| 3 | Từ Huy Bảo| 2A202604021 | Thành viên | [thbao4545](https://github.com/thbao4545) |
 | 4 | | | | |
 
 Không ghi email hay số điện thoại vào bảng này, vì repo có thể để public.
@@ -88,7 +88,8 @@ Mỗi thành viên thêm một mục theo mẫu dưới đây, tiêu đề là `
 
 - Qua phần gom cluster và xây dựng OST, mình hiểu rằng các problem có thể xuất phát từ những lĩnh vực khác nhau nhưng vẫn có chung bản chất bottleneck. Việc phân nhóm giúp nhóm nhìn ra những pattern chung và tránh đánh giá các ý tưởng một cách rời rạc.
 - Ở CP6, điều quan trọng nhất mình học được là không phải bài toán nào cũng cần sử dụng mức AI can thiệp cao nhất. Cần xác định chính xác phần nào có thể giải quyết bằng quy trình hoặc Rule, phần nào thực sự cần khả năng hiểu ngữ cảnh của AI và phần nào nên giữ con người kiểm soát. Việc nhóm lựa chọn Workflow thay vì Agent cho thấy một giải pháp tốt không nhất thiết phải tự động hóa toàn bộ quy trình, mà cần cân bằng giữa hiệu quả, độ chính xác và khả năng kiểm soát rủi ro.
-### 2A202604021_TuHuyBao
+
+### TuHuyBao-2A202604021
 
 **Phần việc phụ trách:**
 

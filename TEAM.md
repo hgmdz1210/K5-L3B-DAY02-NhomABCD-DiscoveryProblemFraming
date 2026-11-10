@@ -126,6 +126,9 @@ Qua quá trình làm việc nhóm, tôi hiểu rõ hơn rằng việc lựa ch�
 - Tham gia xây dựng quy trình tương lai, phân định rõ nhiệm vụ của Rule-based, AI và con người.
 
 - Đề xuất giới hạn can thiệp của AI: chỉ đề xuất nhãn trong danh sách cố định, cung cấp bằng chứng từ trace và hỗ trợ soạn báo cáo; con người vẫn chịu trách nhiệm kiểm tra và đưa ra quyết định cuối cùng
+  
 **Bằng chứng** 
+-  `report/team/group_report.md`: Kiểm chứng + research giải pháp đã có, Quy trình trước/sau
+-  'report/individual/2A202603989_LeThiLy.md'
 
 

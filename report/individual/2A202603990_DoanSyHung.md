@@ -1,6 +1,6 @@
 # Báo cáo cá nhân — 2A202603990_DoanSyHung
 
-> Template chi tiết và prompt mẫu cho từng mục: [docs/01-worksheet.md](../../docs/01-worksheet.md).
+> Đổi tên file theo quy tắc MSSV_HoTen.md, ví dụ 20241234_NguyenVanAn.md (MSSV trước, dấu _, họ tên viết liền không dấu). Sửa cả dòng tiêu đề phía trên cho khớp. Template chi tiết và prompt mẫu cho từng mục: docs/01-worksheet.md. Mỗi thành viên một file trong report/individual/ trên repo nhóm: copy template này thành file mới, điền, rồi commit bằng tài khoản GitHub của bạn. Không viết hộ người khác.
 
 ## 1. Thông tin học viên
 

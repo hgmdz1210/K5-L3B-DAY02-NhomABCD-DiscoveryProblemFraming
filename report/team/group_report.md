@@ -261,38 +261,65 @@ Nếu AI gán nhãn sai nhiều, bằng chứng không hợp lệ hoặc chất 
 
 ### 6.1. Ma trận độ mơ hồ × độ phức tạp
 
-Bài của nhóm nằm ở ô:
+Bài của nhóm nằm ở ô: Độ mơ hồ trung bình - Độ phức tạp trung bình
 
 Vì sao:
+- Độ mơ hồ trung bình vì đầu ra có phạm vi tương đối rõ: phân loại câu trả lời sai theo danh sách 8 nhãn nguyên nhân cố định. Tuy nhiên, một số nguyên nhân có thể dễ nhầm lẫn, chẳng hạn "Retrieval bỏ sót" và "Tài liệu nguồn thiếu hoặc cũ". Thí nghiệm ban đầu cho thấy LLM chỉ trùng nhãn 72,5%, sau khi bổ sung định nghĩa và ví dụ đạt 85%, vẫn còn 15% nhãn chưa chính xác.
+- Độ phức tạp trung bình vì mỗi lần eval cần phân tích khoảng 60 câu sai, đối chiếu câu hỏi gốc, expected answer, actual answer và trace để xác định nguyên nhân. Tuy nhiên, dữ liệu đã có cấu trúc JSONL, danh sách nhãn được chuẩn hóa và quy trình xử lý có các bước rõ ràng.
+Bài toán không hoàn toàn phù hợp với Rule vì việc xác định nguyên nhân lỗi cần hiểu ngữ cảnh và đối chiếu nhiều thông tin, không chỉ dựa vào các điều kiện cố định. Tuy nhiên, cũng chưa cần đến Agent vì phạm vi công việc đã được giới hạn trong danh sách 8 nhãn, dữ liệu đầu vào có cấu trúc và các bước xử lý tương đối ổn định. Do đó, Workflow là mức can thiệp phù hợp: kết hợp Rule và AI trong một quy trình có kiểm soát, giữ con người ở những bước cần judgment và ra quyết định.
 
 ### 6.2. So sánh 4 mức
 
 | Mức | Phương án cho bài của nhóm | Đủ khi nào | Rủi ro | Chọn? |
 |---|---|---|---|---|
-| **No AI** (sửa quy trình) | | | | |
-| **Rule** | | | | |
-| **Workflow** | | | | |
-| **Agent** | | | | |
+| **No AI** (sửa quy trình) | Đọc từng câu sai và gán nhãn thủ công bằng Google Sheets có dropdown; sử dụng script để tổng hợp số liệu. Chuẩn hóa định nghĩa 8 nhãn và hướng dẫn gán nhãn | Khi số lượng câu sai ít, người thực hiện có đủ thời gian và team chỉ cần theo dõi metric tổng hoặc không cần phân tích sâu nguyên nhân | Tốn thời gian đọc và gán nhãn; kết quả có thể không nhất quán giữa các lần thực hiện hoặc giữa các người gán nhãn | Không |
+| **Rule** | Dùng script tính metrics, lọc câu sai, tổng hợp số lượng và tỷ lệ theo nhãn. Có thể dùng điều kiện hoặc từ khóa để nhận diện một số trường hợp đơn giản | Khi nguyên nhân có thể xác định bằng điều kiện rõ ràng, dữ liệu có cấu trúc và kết quả không phụ thuộc nhiều vào việc hiểu ngữ cảnh | Khó phân biệt những nguyên nhân có biểu hiện tương tự; các quy tắc từ khóa có thể bỏ sót hoặc phân loại nhầm những trường hợp phức tạp | Không |
+| **Workflow** | Rule tính metrics và lọc câu sai → AI gợi ý nhãn trong danh sách 8 nhãn kèm bằng chứng từ trace → Khoa duyệt, sửa hoặc từ chối nhãn → Rule tổng hợp số liệu → AI soạn nháp báo cáo → Khoa review và gửi | Khi công việc có các bước lặp lại, đầu vào và đầu ra xác định được, nhưng vẫn cần AI xử lý ngữ cảnh và con người kiểm tra các kết quả có tính judgment | AI gán nhãn sai, trích dẫn bằng chứng không hợp lệ hoặc người dùng duyệt kết quả quá nhanh mà không kiểm tra | Có |
+| **Agent** | Agent tự đọc kết quả eval, tìm nguyên nhân, khám phá nhóm lỗi mới, xác định lỗi ưu tiên và đề xuất hoặc thực hiện thay đổi prompt/pipeline | Khi cần xử lý nhiều bước phức tạp, có quyền truy cập công cụ và dữ liệu đầy đủ, đồng thời có cơ chế giám sát, đánh giá và rollback đáng tin cậy | Khó kiểm soát các hành động tự động; có thể xác định sai nguyên nhân, ưu tiên sai vấn đề hoặc tự thay đổi pipeline gây phát sinh lỗi mới | Không |
 
-**Mức chọn:**
+**Mức chọn:** Workflow
 
 **Vì sao không chọn mức đơn giản hơn:**
+- Không chọn No AI vì quy trình gán nhãn thủ công hiện tại mất khoảng 60 phút cho 60 câu sai. Chuẩn hóa Google Sheets và dropdown giúp nhãn nhất quán hơn nhưng chưa giải quyết đáng kể thời gian phải đọc và phân tích từng câu.
+- Không chọn Rule vì Rule phù hợp để tính metrics, lọc câu sai và tổng hợp số liệu. Tuy nhiên, việc xác định câu sai do retrieval, tài liệu nguồn, chunking hay prompt cần hiểu ngữ cảnh của câu hỏi, câu trả lời và trace. Các điều kiện cố định khó xử lý đầy đủ những trường hợp này.
+- Không chọn Agent vì chưa cần giao toàn bộ quy trình cho AI tự thực hiện. Việc khám phá nguyên nhân mới, lựa chọn thứ tự ưu tiên và thay đổi prompt hoặc pipeline vẫn cần con người quyết định. Agent cũng làm tăng độ phức tạp và rủi ro không cần thiết cho bài toán hiện tại.
+Mức Workflow tận dụng được khả năng xử lý ngôn ngữ của LLM nhưng vẫn giữ được tính kiểm soát của Rule và Human-in-the-loop.
 
 ### 6.3. AI Canvas rút gọn
 
 | Thành phần | Nội dung |
 |---|---|
-| **Prediction** — AI dự đoán / tạo ra gì? | |
-| **Judgment** — con người cân nhắc, quyết định gì? | |
-| **Action** — hành động cuối cùng là gì, ai làm? | |
-| **Outcome** — đo kết quả bằng gì? | |
-| **Input** — AI cần dữ liệu đầu vào gì mỗi lần chạy? Có sẵn không? | |
-| **Feedback** — lấy phản hồi ở đâu để cải thiện? | |
+| **Prediction** — AI dự đoán / tạo ra gì? | AI đọc từng câu trả lời sai cùng trace và gợi ý một trong 8 nhãn nguyên nhân đã được định nghĩa. Mỗi nhãn phải đi kèm bằng chứng trích xuất từ trace gốc. Sau khi có kết quả tổng hợp từ script, AI sử dụng các thông tin này để soạn nháp báo cáo dưới 300 từ, gồm kết quả tổng, top nguyên nhân kèm tỷ lệ và đề xuất sửa |
+| **Judgment** — con người cân nhắc, quyết định gì? | Kiểm tra nhãn AI đề xuất có phù hợp với câu trả lời và trace không; đánh giá bằng chứng có hợp lệ không; chấp nhận, chỉnh sửa hoặc từ chối nhãn. Quyết định nhóm lỗi nào cần ưu tiên xử lý và kiểm tra nội dung báo cáo trước khi gửi |
+| **Action** — hành động cuối cùng là gì, ai làm? | Duyệt các nhãn nguyên nhân. Script tổng hợp số lượng và tỷ lệ của từng nhóm lỗi. AI soạn nháp báo cáo dựa trên kết quả đã được tổng hợp. Kiểm tra số liệu, chỉnh sửa và gửi báo cáo cho Tech Lead/PM. AI không tự gửi báo cáo hoặc thay đổi prompt/pipeline |
+| **Outcome** — đo kết quả bằng gì? | (1) Giảm tổng thời gian từ 130 phút xuống dưới 60 phút/tuần. (2) Tỷ lệ nhãn AI gợi ý trùng với nhãn cuối cùng đạt ít nhất 80%. (3) Top 3 nhóm lỗi theo nhãn AI trùng với top 3 theo nhãn đã được duyệt. (4) Số câu hỏi lại từ Tech Lead/PM không tăng so với trước pilot |
+| **Input** — AI cần dữ liệu đầu vào gì mỗi lần chạy? Có sẵn không? | Kết quả eval xuất dạng JSON, bao gồm câu hỏi gốc, expected answer, actual answer và trace/tài liệu truy xuất. Ngoài ra cần danh sách 8 nhãn nguyên nhân, định nghĩa và ví dụ minh họa cho từng nhãn. Dữ liệu kết quả eval có thể xuất được ra JSON, danh sách nhãn được xây dựng từ việc Khoa đọc và ghi chú các câu sai thực tế |
+| **Feedback** — lấy phản hồi ở đâu để cải thiện? | Phản hồi trực tiếp trên từng nhãn AI gợi ý bằng cách chấp nhận, chỉnh sửa hoặc từ chối. Mỗi tuần chọn 10 câu để tự gán nhãn mà không xem trước kết quả AI (Blind Review), sau đó đối chiếu với nhãn AI và nhãn cuối cùng. Những trường hợp phân loại sai được dùng để bổ sung định nghĩa, ví dụ và điều chỉnh prompt. |
 
 ### 6.4. Hai câu hỏi của Google PAIR
 
 - Người dùng muốn **được hỗ trợ (augment)** hay **giao hẳn việc (automate)**? Bằng chứng:
+Người dùng muốn được hỗ trợ (augment) thay vì giao hoàn toàn việc phân tích lỗi cho AI.
+Bằng chứng:
+- - Vẫn cần kiểm tra từng câu sai để xác định nguyên nhân có chính xác hay không.
+  - Thí nghiệm ban đầu cho thấy tỷ lệ trùng nhãn chỉ đạt 72,5%. Sau khi bổ sung định nghĩa và 2 ví dụ cho mỗi nhãn, tỷ lệ đạt 85% trên 40 câu mới. Kết quả này cho thấy AI có khả năng hỗ trợ phân loại nhưng vẫn chưa đủ tin cậy để thay thế hoàn toàn người thực hiện.
+  - Một số nguyên nhân dễ nhầm lẫn, cần đối chiếu bằng chứng trong trace và đánh giá theo ngữ cảnh.
+  - Người thực hiện vẫn phải lựa chọn lỗi ưu tiên, kiểm tra nội dung báo cáo và quyết định gửi báo cáo.
+Vì vậy, AI đóng vai trò trợ lý phân tích: giúp giảm thời gian đọc và gán nhãn thủ công, còn người chịu trách nhiệm kiểm duyệt và ra quyết định cuối cùng.
+
 - AI sai kiểu nào tệ hơn, **báo nhầm** hay **bỏ sót**? Vì sao, và thiết kế đã xử lý thế nào:
+Báo nhầm nguyên nhân (False Positive) nguy hiểm hơn trong bối cảnh bài toán này. Vì:
+- - Nếu AI gán sai nguyên nhân nhưng trình bày với vẻ chắc chắn, team có thể hiểu sai vấn đề và ưu tiên sửa nhầm thành phần của hệ thống RAG, gây lãng phí thời gian và công sức.
+  - Nếu AI không xác định được nguyên nhân và sử dụng nhãn "Không chắc", trường hợp đó vẫn được nhận diện rõ ràng để kiểm tra thủ công.
+  - Tuy nhiên, bỏ sót một nhóm lỗi phổ biến cũng có thể khiến team không xử lý được vấn đề quan trọng, nên không được để AI tự ý loại bỏ các trường hợp chưa phân loại được.
+Thiết kế xử lý rủi ro:
+- - AI chỉ được sử dụng một trong 8 nhãn đã định nghĩa, không được tự tạo nhãn mới. Nếu không đủ bằng chứng, phải chọn "Không chắc".
+  - Mỗi nhãn phải trích dẫn bằng chứng từ trace gốc, không được tự tạo bằng chứng.
+  - Người duyệt, chỉnh sửa hoặc từ chối tất cả nhãn AI đề xuất trước khi tổng hợp.
+  - Mỗi tuần thực hiện Blind Review 10 câu để kiểm tra chất lượng gợi ý nhãn, tránh tình trạng người duyệt quá tin tưởng AI.
+  - Nếu AI gán nhãn sai nhiều hoặc bằng chứng không hợp lệ, chuyển về Google Sheets với dropdown và script tổng hợp thủ công.
+Như vậy, hệ thống ưu tiên không đưa ra kết luận sai một cách chắc chắn hơn là cố gắng phân loại mọi trường hợp. Những trường hợp không đủ cơ sở sẽ được chuyển cho con người xử lý.
+
 
 ---
 

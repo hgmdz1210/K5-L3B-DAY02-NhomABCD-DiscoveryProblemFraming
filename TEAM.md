@@ -110,8 +110,13 @@ Mỗi thành viên thêm một mục theo mẫu dưới đây, tiêu đề là `
 - `report/team/group_report.md`: mục Problem Card, mục Problem Statement v0/v1 và bảng "Thay đổi so với v0".
 - `report/individual/2A202604021_TuHuyBao.md`:
 
+### TuHuyBao-2A202604021
+**Phần việc phụ trách:**
+CP4 — Kiểm chứng/Research
+CP5 — Quy trình trước/sau
 **Điều mình học được từ phần nhóm:**
-
+**Đóng góp cụ thể**
+**Bằng chứng** 
 - Một metric chỉ đo tốc độ là chưa đủ cần thêm metric chất lượng bên cạnh metric thời gian.
 - Phản biện là cách kiểm tra ý tưởng của chính mình. Cả 3 candidate của mình đều bị hỏi những điều chưa trả lời chắc (số sai mà người dùng không biết, đã có công cụ có sẵn, checklist có thể đủ). Việc nhận ra điều đó giúp mình đồng ý chọn candidate có actor và số liệu rõ hơn.
 - Phải luôn đặt phương án No AI/Rule làm baseline trước khi khẳng định cần AI.

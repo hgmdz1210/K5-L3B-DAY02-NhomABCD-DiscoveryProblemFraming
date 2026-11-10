@@ -68,6 +68,7 @@ Mỗi thành viên thêm một mục theo mẫu dưới đây, tiêu đề là `
 
 - Gom cluster / cây OST (CP3)
 - Mức can thiệp AI (CP6)
+- Phản biện bài của nhóm khác
 
 **Đóng góp cụ thể** (mình đã làm gì, ra sản phẩm gì):
 

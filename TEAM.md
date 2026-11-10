@@ -110,14 +110,22 @@ Mỗi thành viên thêm một mục theo mẫu dưới đây, tiêu đề là `
 - `report/team/group_report.md`: mục Problem Card, mục Problem Statement v0/v1 và bảng "Thay đổi so với v0".
 - `report/individual/2A202604021_TuHuyBao.md`:
 
-### TuHuyBao-2A202604021
+### LeThiLy-2A202603989
 **Phần việc phụ trách:**
 CP4 — Kiểm chứng/Research
 CP5 — Quy trình trước/sau
 **Điều mình học được từ phần nhóm:**
-**Đóng góp cụ thể**
+Qua quá trình làm việc nhóm, tôi hiểu rõ hơn rằng việc lựa chọn một vấn đề nghiên cứu không chỉ dựa trên mức độ khó khăn hay cảm nhận cá nhân, mà cần xem xét Actor, Workflow, Bottleneck, Impact và khả năng đo lường
+**Đóng góp cụ thể**:
+- Tìm hiểu và tổng hợp thông tin về các công cụ Langfuse, LangSmith, Arize Phoenix và Ragas để làm cơ sở đánh giá các giải pháp hiện có.
+
+- Phân tích sự khác biệt giữa việc tính toán các chỉ số đánh giá RAG và việc xác định nguyên nhân gây ra câu trả lời sai.
+
+- Tham gia xác định các bước trong quy trình hiện tại, đặc biệt là công đoạn đọc và gán nhãn nguyên nhân lỗi.
+
+- Tham gia xây dựng quy trình tương lai, phân định rõ nhiệm vụ của Rule-based, AI và con người.
+
+- Đề xuất giới hạn can thiệp của AI: chỉ đề xuất nhãn trong danh sách cố định, cung cấp bằng chứng từ trace và hỗ trợ soạn báo cáo; con người vẫn chịu trách nhiệm kiểm tra và đưa ra quyết định cuối cùng
 **Bằng chứng** 
-- Một metric chỉ đo tốc độ là chưa đủ cần thêm metric chất lượng bên cạnh metric thời gian.
-- Phản biện là cách kiểm tra ý tưởng của chính mình. Cả 3 candidate của mình đều bị hỏi những điều chưa trả lời chắc (số sai mà người dùng không biết, đã có công cụ có sẵn, checklist có thể đủ). Việc nhận ra điều đó giúp mình đồng ý chọn candidate có actor và số liệu rõ hơn.
-- Phải luôn đặt phương án No AI/Rule làm baseline trước khi khẳng định cần AI.
+
 

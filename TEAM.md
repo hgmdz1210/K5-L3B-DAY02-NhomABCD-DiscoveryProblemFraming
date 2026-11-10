@@ -114,9 +114,13 @@ Mỗi thành viên thêm một mục theo mẫu dưới đây, tiêu đề là `
 **Phần việc phụ trách:**
 CP4 — Kiểm chứng/Research
 CP5 — Quy trình trước/sau
+
 **Điều mình học được từ phần nhóm:**
+
 Qua quá trình làm việc nhóm, tôi hiểu rõ hơn rằng việc lựa chọn một vấn đề nghiên cứu không chỉ dựa trên mức độ khó khăn hay cảm nhận cá nhân, mà cần xem xét Actor, Workflow, Bottleneck, Impact và khả năng đo lường
+
 **Đóng góp cụ thể**:
+
 - Tìm hiểu và tổng hợp thông tin về các công cụ Langfuse, LangSmith, Arize Phoenix và Ragas để làm cơ sở đánh giá các giải pháp hiện có.
 
 - Phân tích sự khác biệt giữa việc tính toán các chỉ số đánh giá RAG và việc xác định nguyên nhân gây ra câu trả lời sai.

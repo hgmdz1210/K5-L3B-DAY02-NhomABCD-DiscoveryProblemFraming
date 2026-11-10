@@ -5,9 +5,9 @@
 
 ## 1. Thông tin nhóm
 
-- Tên nhóm:
+- Tên nhóm: ABCD
 - Thành viên: xem `TEAM.md`
-- Candidate problem được chọn (1 câu):
+- Candidate problem được chọn (1 câu): Khi xong eval hằng tuần, Junior AI Engineer phụ trách đánh giá RAG muốn biết các câu sai hỏng vì nguyên nhân gì để báo cáo và chọn việc sửa trước planning, nhưng mất khoảng 60/130 phút chỉ để đọc và gán nhãn khoảng 60 câu sai.
 - Quyết định cuối: Go (phạm vi nhỏ)
 
 ---
@@ -407,8 +407,31 @@ Ra từ việc Khoa đọc và ghi chú tự do 50 câu sai trước, rồi gom 
 
 ## 9. Hạn chế và hướng tiếp theo
 
--
+### 9.1. Hạn chế
+
+- **Bằng chứng kiểm chứng còn hạn chế:** dữ liệu phỏng vấn 3 kỹ sư AI/ML, poll 6 người và thí nghiệm gán nhãn trong báo cáo hiện là dữ liệu hư cấu để minh họa. Vì vậy, chưa thể khẳng định mức độ phổ biến của problem hoặc kết luận giải pháp đã được kiểm chứng trong môi trường thực tế.
+
+- **Thí nghiệm đánh giá AI còn quy mô nhỏ:** tỷ lệ trùng nhãn 85% mới được ghi nhận trên 40 câu sau khi bổ sung định nghĩa và ví dụ cho từng nhãn. Kết quả chưa đủ để khẳng định chất lượng AI trên các tập dữ liệu lớn hơn, các tuần khác nhau hoặc những nhóm lỗi ít xuất hiện.
+
+- **Rủi ro về dữ liệu và chi phí chưa được giải quyết:** nhóm chưa xác nhận chính sách của công ty về việc gửi câu hỏi, câu trả lời và tài liệu nội bộ vào API LLM bên ngoài. Chi phí API, phương án tự host và yêu cầu bảo mật dữ liệu cũng chưa được đánh giá đầy đủ.
+
+### 9.2. Hướng tiếp theo
+
+- **Kiểm chứng problem bằng dữ liệu thực tế:** phỏng vấn thêm các kỹ sư AI/ML đang thực hiện error analysis RAG, đo thời gian thực tế cho từng bước và xác định tần suất phát sinh vấn đề. Tập trung vào các team có từ 20 câu sai/tuần trở lên và thực sự cần phân tích nguyên nhân.
+
+- **Kiểm tra tính khả thi và bảo mật:** trao đổi với Tech Lead về chính sách dữ liệu trước khi sử dụng API LLM bên ngoài; ước tính chi phí vận hành và xem xét phương án tự host nếu dữ liệu không được phép gửi ra ngoài.
+
+**Kết quả kỳ vọng:** sau 4 tuần pilot, nhóm có thể xác định liệu Workflow có thực sự giảm thời gian phân tích từ 130 phút xuống dưới 60 phút/tuần, duy trì tỷ lệ nhãn trùng tối thiểu 80% và tạo ra báo cáo hữu ích cho Tech Lead/PM hay không. Từ đó quyết định tiếp tục mở rộng, điều chỉnh quy trình hoặc quay về phương án không sử dụng AI.
 
 ## 10. Tài liệu tham khảo
 
--
+Kiểm ngày 09/11/2026. Gói, giá và tính năng có thể đã đổi; mở lại link trước khi dùng.
+
+- [Langfuse: Annotation Queues](https://langfuse.com/docs/evaluation/evaluation-methods/annotation-queues)
+- [Langfuse: Error analysis](https://langfuse.com/blog/2025-08-29-error-analysis-to-evaluate-llm-applications)
+- [LangSmith: Insights](https://docs.langchain.com/langsmith/insights)
+- [Arize Phoenix](https://phoenix.arize.com)
+- [Rubin Lake: Arize Phoenix](https://rubinlake.com/fr/technology-radar/data-platforms-and-mlops/arize-phoenix) (nguồn thứ cấp)
+- [Ragas documentation](https://docs.ragas.io)
+- [rhumb.dev: Ragas](https://rhumb.dev/service/ragas) (nguồn thứ cấp, ước tính chi phí gọi API)
+- [Latitude: LangSmith alternatives](https://latitude.so/blog/langsmith-alternatives-agent-observability-2026) (nguồn của đối thủ cạnh tranh, đọc dè dặt)

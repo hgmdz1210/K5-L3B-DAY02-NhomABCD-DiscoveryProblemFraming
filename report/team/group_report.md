@@ -301,7 +301,7 @@ Mức Workflow tận dụng được khả năng xử lý ngôn ngữ của LLM 
 - Người dùng muốn **được hỗ trợ (augment)** hay **giao hẳn việc (automate)**? Bằng chứng:
 Người dùng muốn được hỗ trợ (augment) thay vì giao hoàn toàn việc phân tích lỗi cho AI.
 Bằng chứng:
-- - Vẫn cần kiểm tra từng câu sai để xác định nguyên nhân có chính xác hay không.
+  - Vẫn cần kiểm tra từng câu sai để xác định nguyên nhân có chính xác hay không.
   - Thí nghiệm ban đầu cho thấy tỷ lệ trùng nhãn chỉ đạt 72,5%. Sau khi bổ sung định nghĩa và 2 ví dụ cho mỗi nhãn, tỷ lệ đạt 85% trên 40 câu mới. Kết quả này cho thấy AI có khả năng hỗ trợ phân loại nhưng vẫn chưa đủ tin cậy để thay thế hoàn toàn người thực hiện.
   - Một số nguyên nhân dễ nhầm lẫn, cần đối chiếu bằng chứng trong trace và đánh giá theo ngữ cảnh.
   - Người thực hiện vẫn phải lựa chọn lỗi ưu tiên, kiểm tra nội dung báo cáo và quyết định gửi báo cáo.
@@ -309,11 +309,11 @@ Vì vậy, AI đóng vai trò trợ lý phân tích: giúp giảm thời gian đ
 
 - AI sai kiểu nào tệ hơn, **báo nhầm** hay **bỏ sót**? Vì sao, và thiết kế đã xử lý thế nào:
 Báo nhầm nguyên nhân (False Positive) nguy hiểm hơn trong bối cảnh bài toán này. Vì:
-- - Nếu AI gán sai nguyên nhân nhưng trình bày với vẻ chắc chắn, team có thể hiểu sai vấn đề và ưu tiên sửa nhầm thành phần của hệ thống RAG, gây lãng phí thời gian và công sức.
+  - Nếu AI gán sai nguyên nhân nhưng trình bày với vẻ chắc chắn, team có thể hiểu sai vấn đề và ưu tiên sửa nhầm thành phần của hệ thống RAG, gây lãng phí thời gian và công sức.
   - Nếu AI không xác định được nguyên nhân và sử dụng nhãn "Không chắc", trường hợp đó vẫn được nhận diện rõ ràng để kiểm tra thủ công.
   - Tuy nhiên, bỏ sót một nhóm lỗi phổ biến cũng có thể khiến team không xử lý được vấn đề quan trọng, nên không được để AI tự ý loại bỏ các trường hợp chưa phân loại được.
 Thiết kế xử lý rủi ro:
-- - AI chỉ được sử dụng một trong 8 nhãn đã định nghĩa, không được tự tạo nhãn mới. Nếu không đủ bằng chứng, phải chọn "Không chắc".
+  - AI chỉ được sử dụng một trong 8 nhãn đã định nghĩa, không được tự tạo nhãn mới. Nếu không đủ bằng chứng, phải chọn "Không chắc".
   - Mỗi nhãn phải trích dẫn bằng chứng từ trace gốc, không được tự tạo bằng chứng.
   - Người duyệt, chỉnh sửa hoặc từ chối tất cả nhãn AI đề xuất trước khi tổng hợp.
   - Mỗi tuần thực hiện Blind Review 10 câu để kiểm tra chất lượng gợi ý nhãn, tránh tình trạng người duyệt quá tin tưởng AI.

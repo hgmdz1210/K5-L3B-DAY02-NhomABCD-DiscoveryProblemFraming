@@ -26,9 +26,9 @@ Gợi ý vai trò (một người có thể giữ nhiều vai): điều phối t
 | Checkpoint | Người chính | Người hỗ trợ | Sản phẩm |
 |---|---|---|---|
 | CP3 — Hội tụ nhóm | Việt Anh | Hưng | Cluster, cây OST, bảng chấm điểm |
-| CP4 — Kiểm chứng | | Hưng | Assumption map, snapshot hoặc survey |
-| CP4 — Research | | Hưng | Bảng research có link |
-| CP5 — Quy trình trước/sau | | Hưng | Quy trình + bảng before/after |
+| CP4 — Kiểm chứng |Ly | Hưng | Assumption map, snapshot hoặc survey |
+| CP4 — Research |Ly | Hưng | Bảng research có link |
+| CP5 — Quy trình trước/sau |Ly | Hưng | Quy trình + bảng before/after |
 | CP5 — Problem Statement v0 | Bảo | Hưng | Problem Statement v0 |
 | CP6 — Mức can thiệp + Problem Statement v1 | Việt Anh | Hưng, Bảo | Ma trận, AI Canvas, eval, Problem Statement v1 |
 | CP6 — Quyết định | Hưng | | 4 rủi ro + Go/Not Yet/No-Go |

@@ -8,7 +8,7 @@
 - Tên nhóm:
 - Thành viên: xem `TEAM.md`
 - Candidate problem được chọn (1 câu):
-- Quyết định cuối: Go / Not Yet / No-Go
+- Quyết định cuối: Go (phạm vi nhỏ)
 
 ---
 
@@ -377,24 +377,31 @@ Ra từ việc Khoa đọc và ghi chú tự do 50 câu sai trước, rồi gom 
 
 | Rủi ro | Câu hỏi | Mức độ rủi ro (Thấp = an toàn / TB / Cao = nguy hiểm) | Lý do / bằng chứng |
 |---|---|---|---|
-| **Value** | Người dùng có thật sự cần và sẽ dùng không? | | |
-| **Usability** | Người dùng có dùng được, có hiểu và sửa được đầu ra của AI không? | | |
-| **Feasibility** | Có đủ dữ liệu, công cụ, kỹ năng để làm không? | | |
-| **Viability** | Có hợp chi phí, pháp lý, quy định tổ chức không? Ai vận hành? | | |
+| **Value** | Người dùng có thật sự cần và sẽ dùng không? | Trung bình | 2/3 phỏng vấn và 4/6 poll xác nhận pain đọc và gán nhãn câu sai; nhưng giả định "danh sách nhãn ổn định giữa các tuần" mới có 1 nguồn, và chưa biết Tech Lead có dùng bảng nguyên nhân để chọn việc sửa không |
+| **Usability** | Người dùng có dùng được, có hiểu và sửa được đầu ra của AI không? | Thấp | Hưng chỉ duyệt nhãn trong Google Sheets (cột dropdown) và sửa nháp văn bản, không phải học công cụ mới; mỗi nhãn kèm đoạn trace để đối chiếu |
+| **Feasibility** | Có đủ dữ liệu, công cụ, kỹ năng để làm không? | Trung bình | LLM trùng nhãn 85% trên 40 câu, nhưng mẫu nhỏ và danh sách nhãn được chỉnh trên dữ liệu gần giống; dữ liệu eval đã xuất được ra JSONL; công cụ (Sheets, script, Langfuse/Phoenix) đã có sẵn |
+| **Viability** | Có hợp chi phí, pháp lý, quy định tổ chức không? Ai vận hành? | Trung bình | Chưa biết chính sách công ty về việc gửi nội dung câu hỏi và tài liệu nội bộ vào API LLM bên ngoài; chưa ước tính chi phí gọi API. Hưng vận hành trong pilot |
 
 ### 8.2. Kết luận
 
-**Quyết định:** Go / Not Yet / No-Go
+**Quyết định:** Go, phạm vi nhỏ
 
-**Lý do:**
+**Lý do:** Không có rủi ro mức Cao. Ba rủi ro Trung bình (Value, Feasibility, Viability) đều kiểm được ngay trong pilot. Mức Workflow giữ người duyệt từng nhãn, nên 15% nhãn còn sai không đi thẳng vào báo cáo.
 
-**Nếu Go — pilot nhỏ nhất:**
+**Nếu Go — pilot nhỏ nhất:** 4 tuần (giả định danh sách nhãn ổn định cần nhiều tuần để thấy).
+- Không xây nền tảng. Dùng Google Sheets (cột nhãn dropdown), một prompt chuẩn để gợi ý nhãn và soạn nháp, và một script Python ngắn để lọc và gom nhóm.
+- Hưng tự ghi giờ từng bước, ghi số nhãn phải sửa, chấm nháp theo 4 tiêu chí ở mục 7. Mỗi tuần thêm 10 câu ẩn nhãn AI để đối chiếu (thời gian này ghi riêng, không tính vào 48 phút).
+- Trước pilot: hỏi Tech Lead về chính sách dữ liệu (giả định #6) và hỏi Tech Lead, PM có dùng bảng nguyên nhân để chọn việc sửa hay không.
 
-**Nếu Not Yet — cần kiểm chứng gì trước:**
+**Nếu Not Yet — cần kiểm chứng gì trước:** Không áp dụng. Hai việc cần xác nhận trước pilot (chính sách dữ liệu, việc Tech Lead dùng bảng nguyên nhân) nằm trong pilot ở trên; nếu Tech Lead không cho gửi dữ liệu thì chuyển sang nhánh No-Go bên dưới.
 
-**Nếu No-Go — nên làm gì thay AI:**
+**Nếu No-Go — nên làm gì thay AI:** Dùng Google Sheets có dropdown theo 8 nhãn đã chuẩn hóa, kèm script lọc và gom nhóm (No AI + Rule). Nếu vẫn cần AI nhưng không được gửi dữ liệu ra ngoài, xem xét mô hình tự host.
 
 **Ngưỡng dừng** (nếu sau … mà … thì quay về …):
+- Nếu 2 tuần liên tiếp Hưng phải sửa trên 30% nhãn AI gợi ý (trùng dưới 70%) thì quay về Google Sheets dropdown (No AI).
+- Nếu đối chiếu 10 câu ẩn nhãn cho thấy một nhóm trong top 3 bị gán sai mà Hưng không phát hiện khi duyệt thì dừng pilot, xem lại bước duyệt.
+- Nếu danh sách nhãn phải đổi hơn 2 nhãn mỗi tuần trong 4 tuần (giả định #3 sai) thì dừng, quay lại đọc và ghi chú tự do.
+- Nếu Tech Lead không cho gửi nội dung vào API bên ngoài thì No-Go với phương án này; xem xét mô hình tự host hoặc quay về No AI.
 
 ---
 

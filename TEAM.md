@@ -112,8 +112,7 @@ Mỗi thành viên thêm một mục theo mẫu dưới đây, tiêu đề là `
 
 ### LeThiLy-2A202603989
 **Phần việc phụ trách:**
-CP4 — Kiểm chứng/Research
-CP5 — Quy trình trước/sau
+CP4 — Kiểm chứng/Research, CP5 — Quy trình trước/sau
 
 **Điều mình học được từ phần nhóm:**
 

@@ -12,7 +12,7 @@
 
 | STT | Họ và tên | MSSV | Vai trò trong nhóm | Tài khoản GitHub |
 |---:|---|---|---|---|
-| 1 | Đoàn Sỹ Hưng | 2A202603990 | Trưởng nhóm | hgmdz1210 |
+| 1 | Đoàn Sỹ Hưng | 2A202603990 | Trưởng nhóm | https://github.com/hgmdz1210 |
 | 2 | Trần Việt Anh | 2A202604029 | Phụ trách kiểm chứng | https://github.com/Vietzanh |
 | 3 | | | | |
 | 4 | | | | |

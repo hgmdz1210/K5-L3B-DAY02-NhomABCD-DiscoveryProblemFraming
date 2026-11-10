@@ -122,30 +122,30 @@ Tổng hợp:
 |---|---:|---|---|
 | Phỏng vấn | 3 | 2/3 mất nhiều thời gian nhất ở việc đọc và gán nhãn câu sai | 1 người nói chỉ cần nhìn metric tổng (faithfulness, recall) để quyết định, không đọc từng câu |
 | Poll trong lớp | 6 | 4/6 từng phân tích lỗi mô hình hoặc RAG thủ công hơn 1 giờ | 2/6 nói metric tổng là đủ |
-| Thí nghiệm gán nhãn (LLM so với Khoa) | 40 + 40 câu sai | Với danh sách nhãn ban đầu, trùng 29/40 (72,5%). Sau khi thêm định nghĩa và 2 ví dụ cho mỗi nhãn, trùng 34/40 (85%) trên 40 câu mới | 11/40 câu lệch nhãn ở lần đầu, hay lẫn giữa "retrieval bỏ sót" và "tài liệu nguồn thiếu"; 15% vẫn sai sau khi chỉnh |
+| Thí nghiệm gán nhãn (LLM so với Kỹ sư AI) | 40 + 40 câu sai | Với danh sách nhãn ban đầu, trùng 29/40 (72,5%). Sau khi thêm định nghĩa và 2 ví dụ cho mỗi nhãn, trùng 34/40 (85%) trên 40 câu mới | 11/40 câu lệch nhãn ở lần đầu, hay lẫn giữa "retrieval bỏ sót" và "tài liệu nguồn thiếu"; 15% vẫn sai sau khi chỉnh |
 
-**Nhóm đã sửa problem thế nào sau kiểm chứng:**thu hẹp từ "tự động hóa error analysis" thành "**gợi ý nhãn nguyên nhân theo danh sách cố định và soạn nháp báo cáo, người duyệt từng nhãn**". Thí nghiệm cho thấy 85% đủ để làm gợi ý nhưng chưa đủ để thay người. Thêm phương án không dùng AI cho team chỉ cần metric tổng. Giả định #3 (danh sách nhãn ổn định) vẫn chưa đủ bằng chứng.
+**Nhóm đã sửa problem thế nào sau kiểm chứng:** thu hẹp từ "tự động hóa error analysis" thành "**gợi ý nhãn nguyên nhân theo danh sách cố định và soạn nháp báo cáo, người duyệt từng nhãn**". Thí nghiệm cho thấy 85% đủ để làm gợi ý nhưng chưa đủ để thay người. Thêm phương án không dùng AI cho team chỉ cần metric tổng. Giả định #3 (danh sách nhãn ổn định) vẫn chưa đủ bằng chứng.
 
 ### 3.3. Research giải pháp đã có
 
 | Công cụ / case / pattern | Link | Giải bước nào trong quy trình? | Điểm mạnh | Khoảng trống / rủi ro | Bài học cho nhóm |
 |---|---|---|---|---|---|
-| Langfuse: annotation queues và LLM-as-a-Judge|(https://langfuse.com/docs/evaluation/evaluation-methods/annotation-queues), cùng [hướng dẫn error analysis](https://langfuse.com/blog/2025-08-29-error-analysis-to-evaluate-llm-applications) | Bước 3–5: duyệt và gán nhãn câu sai, gom nhóm, theo dõi bằng score | Có hàng đợi để duyệt trace; ghi chú tự do trước rồi gom thành nhóm lỗi ổn định. Bản tháng 8/2025 của hướng dẫn gợi ý bắt đầu với 50–100 trace đa dạng (trang hiện tại chỉ nói cần mẫu đại diện, không nêu số). Trang annotation queue nói dùng nhãn của người để căn chỉnh LLM judge | Phải đưa dữ liệu vào dưới dạng trace hoặc dataset (Khoa đang dùng JSONL, tốn công chuyển). Judge nên dựa trên nhóm lỗi đã biết, nên vẫn cần bước đọc dữ liệu trước | Danh sách nhãn phải rút ra từ việc đọc dữ liệu thật trước. LLM chỉ nên gán nhãn theo danh sách đó và phải đối chiếu với nhãn người |
-| LangSmith Insights Agent |(https://docs.langchain.com/langsmith/insights) | Bước 4–5: tự gom trace thành nhóm failure mode, không cần định nghĩa trước | Phát hiện nhóm lỗi chưa biết và xuất báo cáo theo cụm; có thể lọc theo tín hiệu như phản hồi xấu của người dùng ([thông báo 10/2025](https://blog.langchain.com/insights-agent-multiturn-evals-langsmith)) | Khi công bố chỉ có cho gói Plus và Enterprise cloud, cần kiểm lại gói hiện tại. Một blog của đối thủ ([Latitude](https://latitude.so/blog/langsmith-alternatives-agent-observability-2026)) nhận xét chưa có vòng đời issue và theo dõi tần suất; đọc dè dặt vì họ cạnh tranh | Hữu ích để khám phá nhóm lỗi mới, nhưng phụ thuộc gói trả phí và dữ liệu phải nằm trong LangSmith. Không thay bước người duyệt |
-| Arize Phoenix |(https://phoenix.arize.com) | Bước 3–4: tracing, evaluator, clustering embedding để cô lập chỗ kém | Mã nguồn mở, tự host, dựa trên OpenTelemetry, chạy được trong notebook | Giấy phép Elastic License 2.0 chứ không phải giấy phép OSI; mặc định xác thực tắt và lưu trace không giới hạn, trong khi trace chứa prompt và tài liệu truy xuất (theo [một radar công nghệ bên thứ ba](https://rubinlake.com/fr/technology-radar/data-platforms-and-mlops/arize-phoenix)) | Phù hợp nếu chính sách dữ liệu không cho gửi trace ra ngoài. Nhớ bật xác thực và đặt thời hạn lưu |
-| Ragas |(https://docs.ragas.io) | Bước 2–3: tính metric Faithfulness, Response Relevancy, Context Precision, Context Recall (trang chủ tài liệu còn liệt kê Context Entities Recall và Noise Sensitivity) để lọc câu sai | Bộ metric phổ biến cho RAG, chạy được trong notebook hoặc batch | Cho biết điểm thấp, không nói nguyên nhân; context recall cần đáp án tham chiếu; mỗi metric gọi LLM nhiều lần mỗi mẫu, một nguồn bên thứ ba ước tính 100 mẫu cần khoảng 200–600 lần gọi API 
-|(rhumb.dev|(https://rhumb.dev/service/ragas)) | Dùng cho bước tính metric (Rule). Bước nguyên nhân vẫn cần danh sách nhãn và người duyệt. Tính trước chi phí gọi API |
+| Langfuse: annotation queues và LLM-as-a-Judge | [Annotation queues](https://langfuse.com/docs/evaluation/evaluation-methods/annotation-queues), cùng [hướng dẫn error analysis](https://langfuse.com/blog/2025-08-29-error-analysis-to-evaluate-llm-applications) | Bước 3–5: duyệt và gán nhãn câu sai, gom nhóm, theo dõi bằng score | Có hàng đợi để duyệt trace; ghi chú tự do trước rồi gom thành nhóm lỗi ổn định. Bản tháng 8/2025 của hướng dẫn gợi ý bắt đầu với 50–100 trace đa dạng (trang hiện tại chỉ nói cần mẫu đại diện, không nêu số). Trang annotation queue nói dùng nhãn của người để căn chỉnh LLM judge | Phải đưa dữ liệu vào dưới dạng trace hoặc dataset (Kỹ sư AI đang dùng JSONL, tốn công chuyển). Judge nên dựa trên nhóm lỗi đã biết, nên vẫn cần bước đọc dữ liệu trước | Danh sách nhãn phải rút ra từ việc đọc dữ liệu thật trước. LLM chỉ nên gán nhãn theo danh sách đó và phải đối chiếu với nhãn người |
+| LangSmith Insights Agent | [LangSmith Insights](https://docs.langchain.com/langsmith/insights) | Bước 4–5: tự gom trace thành nhóm failure mode, không cần định nghĩa trước | Phát hiện nhóm lỗi chưa biết và xuất báo cáo theo cụm; có thể lọc theo tín hiệu như phản hồi xấu của người dùng ([thông báo 10/2025](https://blog.langchain.com/insights-agent-multiturn-evals-langsmith)) | Khi công bố chỉ có cho gói Plus và Enterprise cloud, cần kiểm lại gói hiện tại. Một blog của đối thủ ([Latitude](https://latitude.so/blog/langsmith-alternatives-agent-observability-2026)) nhận xét chưa có vòng đời issue và theo dõi tần suất; đọc dè dặt vì họ cạnh tranh | Hữu ích để khám phá nhóm lỗi mới, nhưng phụ thuộc gói trả phí và dữ liệu phải nằm trong LangSmith. Không thay bước người duyệt |
+| Arize Phoenix | [Arize Phoenix](https://phoenix.arize.com) | Bước 3–4: tracing, evaluator, clustering embedding để cô lập chỗ kém | Mã nguồn mở, tự host, dựa trên OpenTelemetry, chạy được trong notebook | Giấy phép Elastic License 2.0 chứ không phải giấy phép OSI; mặc định xác thực tắt và lưu trace không giới hạn, trong khi trace chứa prompt và tài liệu truy xuất (theo [một radar công nghệ bên thứ ba](https://rubinlake.com/fr/technology-radar/data-platforms-and-mlops/arize-phoenix)) | Phù hợp nếu chính sách dữ liệu không cho gửi trace ra ngoài. Nhớ bật xác thực và đặt thời hạn lưu |
+| Ragas | [Ragas documentation](https://docs.ragas.io) | Bước 2–3: tính metric Faithfulness, Response Relevancy, Context Precision, Context Recall (trang chủ tài liệu còn liệt kê Context Entities Recall và Noise Sensitivity) để lọc câu sai | Bộ metric phổ biến cho RAG, chạy được trong notebook hoặc batch | Cho biết điểm thấp, không nói nguyên nhân; context recall cần đáp án tham chiếu; mỗi metric gọi LLM nhiều lần mỗi mẫu, một nguồn bên thứ ba ước tính 100 mẫu cần khoảng 200–600 lần gọi API ([rhumb.dev](https://rhumb.dev/service/ragas)) | Dùng cho bước tính metric (Rule). Bước nguyên nhân vẫn cần danh sách nhãn và người duyệt. Tính trước chi phí gọi API |
 
 **Kết luận research:**
 
 ```text
 Phần metric và log đã có công cụ. Phần "nguyên nhân lỗi" cần danh sách nhãn rút ra từ dữ liệu thật.
 Hướng hợp lý: Rule tính metric → lọc câu sai → AI gợi ý nhãn theo danh sách cố định
-→ Khoa duyệt từng nhãn → AI soạn nháp báo cáo → Khoa gửi.
+→ Kỹ sư AI duyệt từng nhãn → AI soạn nháp báo cáo → Kỹ sư AI gửi.
 Không tự xây nền tảng observability: pilot dùng Sheets và script; cần giao diện duyệt thì dùng Langfuse hoặc Phoenix.
 ```
 
-Đây là điểm khác lớn nhất so với ý ban đầu của Khoa: lúc đầu Khoa định "xây công cụ tự động phân loại lỗi hoàn toàn và vẽ dashboard".
+Đây là điểm khác lớn nhất so với ý ban đầu của Kỹ sư AI: lúc đầu Kỹ sư AI định "xây công cụ tự động phân loại lỗi hoàn toàn và vẽ dashboard".
+
 ---
 
 ## 4. Quy trình trước/sau (CP5)
@@ -154,9 +154,6 @@ Không tự xây nền tảng observability: pilot dùng Sheets và script; cầ
 
 Sơ đồ (ASCII, Mermaid hoặc link ảnh trong `report/assets/`):
 
-```text
-
-```
 ```mermaid
 flowchart TD
     A["1. Chạy evaluation 300 câu<br/>10 phút"]
@@ -173,13 +170,13 @@ flowchart TD
 ```
 | Bước | Actor | Input | Output | Thời gian / tần suất | Ghi chú |
 |---:|---|---|---|---|---|
-| 1 | Khoa / Script | Dataset 300 câu, model và cấu hình evaluation | Kết quả evaluation | 10 phút/lần | Chạy và chờ xuất kết quả |
-| 2 | Khoa | Kết quả evaluation | Các metric tổng hợp | 10 phút/lần | Tính bằng Sheets hoặc script rời |
-| 3 | Khoa | Kết quả evaluation | Danh sách câu trả lời sai | 10 phút/lần | Lọc các trường hợp lỗi |
-| 4 | Khoa | Câu sai, câu hỏi gốc, expected answer, actual answer, trace | Danh sách câu sai được gán nguyên nhân | 60 phút/lần | **Bottleneck chính** |
-| 5 | Khoa | Danh sách lỗi đã gán nguyên nhân | Bảng nhóm lỗi, tỷ lệ và lỗi ưu tiên | 15 phút/lần | Tổng hợp thủ công |
-| 6 | Khoa | Metrics và bảng thống kê lỗi | Báo cáo và đề xuất sửa | 20 phút/lần | Viết báo cáo thủ công |
-| 7 | Khoa | Báo cáo dự thảo | Báo cáo hoàn chỉnh | 5 phút/lần | Review, gửi và trả lời câu hỏi |
+| 1 | Kỹ sư AI / Script | Dataset 300 câu, model và cấu hình evaluation | Kết quả evaluation | 10 phút/lần | Chạy và chờ xuất kết quả |
+| 2 | Kỹ sư AI | Kết quả evaluation | Các metric tổng hợp | 10 phút/lần | Tính bằng Sheets hoặc script rời |
+| 3 | Kỹ sư AI | Kết quả evaluation | Danh sách câu trả lời sai | 10 phút/lần | Lọc các trường hợp lỗi |
+| 4 | Kỹ sư AI | Câu sai, câu hỏi gốc, expected answer, actual answer, trace | Danh sách câu sai được gán nguyên nhân | 60 phút/lần | **Bottleneck chính** |
+| 5 | Kỹ sư AI | Danh sách lỗi đã gán nguyên nhân | Bảng nhóm lỗi, tỷ lệ và lỗi ưu tiên | 15 phút/lần | Tổng hợp thủ công |
+| 6 | Kỹ sư AI | Metrics và bảng thống kê lỗi | Báo cáo và đề xuất sửa | 20 phút/lần | Viết báo cáo thủ công |
+| 7 | Kỹ sư AI | Báo cáo dự thảo | Báo cáo hoàn chỉnh | 5 phút/lần | Review, gửi và trả lời câu hỏi |
 
 **Bottleneck chính:** Bước 4 – Đọc từng câu trả lời sai và gán nguyên nhân, mất 60 phút, chiếm khoảng 46,15% tổng thời gian.
 
@@ -191,11 +188,11 @@ flowchart TD
 flowchart TD
     A["1. Chạy eval và tính metric<br/>RULE – 3 phút"]
     B["2. AI gợi ý nhãn và trích dẫn trace<br/>AI – 2 phút"]
-    C["3. Khoa duyệt và sửa nhãn<br/>HUMAN – 25 phút"]
+    C["3. Kỹ sư AI duyệt và sửa nhãn<br/>HUMAN – 25 phút"]
     D["4. Gom nhóm và đếm tỷ lệ<br/>RULE – 3 phút"]
     E["5. AI soạn nháp báo cáo<br/>AI – 1 phút"]
-    F["6. Khoa kiểm số, sửa nháp và chọn ưu tiên<br/>HUMAN – 12 phút"]
-    G["7. Khoa gửi báo cáo<br/>HUMAN – 2 phút"]
+    F["6. Kỹ sư AI kiểm số, sửa nháp và chọn ưu tiên<br/>HUMAN – 12 phút"]
+    G["7. Kỹ sư AI gửi báo cáo<br/>HUMAN – 2 phút"]
 
     A --> B --> C --> D --> E --> F --> G
 
@@ -216,16 +213,16 @@ flowchart TD
 - AI không tự tính số liệu thống kê.
 - AI không tự gửi báo cáo.
 - AI không tự thay đổi prompt hoặc pipeline.
-- Khoa có quyền chấp nhận, sửa hoặc từ chối mọi nhãn do AI đề xuất.
+- Kỹ sư AI có quyền chấp nhận, sửa hoặc từ chối mọi nhãn do AI đề xuất.
 
 ### Phương án quay về (Fallback)
 
 Nếu AI gán nhãn sai nhiều, bằng chứng không hợp lệ hoặc chất lượng báo cáo không đạt yêu cầu:
 
 1. Dừng sử dụng gợi ý AI.
-2. Chuyển sang Google Sheets có dropdown để Khoa tự gán nhãn.
+2. Chuyển sang Google Sheets có dropdown để Kỹ sư AI tự gán nhãn.
 3. Sử dụng script hiện tại để tổng hợp số liệu.
-4. Khoa tiếp tục viết và review báo cáo theo quy trình thủ công.
+4. Kỹ sư AI tiếp tục viết và review báo cáo theo quy trình thủ công.
 
 ### 4.3. Before / after
 
@@ -235,7 +232,7 @@ Nếu AI gán nhãn sai nhiều, bằng chứng không hợp lệ hoặc chất 
 | Tổng thời gian |130 phút |48 phút |Giảm 82 phút, tương đương 63,08% |
 | Số bước thủ công |7/7 |3/7 | Người trực tiếp làm chính ở bước 3, 6, 7 |
 | Bottleneck chính |Gán nguyên nhân (60 phút) |Duyệt nhãn (25 phút) |Chuyển từ phân loại thủ công sang kiểm duyệt AI |
-| Rủi ro mới phát sinh |Sai sót khi phân loại thủ công |AI gán nhãn sai, bằng chứng không hợp lệ, Khoa duyệt qua loa |Cần pilot và Blind Review |
+| Rủi ro mới phát sinh |Sai sót khi phân loại thủ công |AI gán nhãn sai, bằng chứng không hợp lệ, Kỹ sư AI duyệt qua loa |Cần pilot và Blind Review |
 
 ---
 
@@ -251,9 +248,6 @@ Nếu AI gán nhãn sai nhiều, bằng chứng không hợp lệ hoặc chất 
 | **Boundary** | AI không tự sửa prompt hay pipeline, không tự gửi, không đặt nhãn ngoài danh sách, không thay người duyệt |
 
 **Phản biện nhận được:** AI chỉ ra metric chỉ đo tốc độ. Báo cáo nhanh hơn nhưng nhãn sai thì nhóm sửa sai chỗ cả tuần. Nhóm đồng ý và thêm metric chất lượng ở v1.
-
-
--
 
 ---
 
@@ -274,7 +268,7 @@ Bài toán không hoàn toàn phù hợp với Rule vì việc xác định nguy
 |---|---|---|---|---|
 | **No AI** (sửa quy trình) | Đọc từng câu sai và gán nhãn thủ công bằng Google Sheets có dropdown; sử dụng script để tổng hợp số liệu. Chuẩn hóa định nghĩa 8 nhãn và hướng dẫn gán nhãn | Khi số lượng câu sai ít, người thực hiện có đủ thời gian và team chỉ cần theo dõi metric tổng hoặc không cần phân tích sâu nguyên nhân | Tốn thời gian đọc và gán nhãn; kết quả có thể không nhất quán giữa các lần thực hiện hoặc giữa các người gán nhãn | Không |
 | **Rule** | Dùng script tính metrics, lọc câu sai, tổng hợp số lượng và tỷ lệ theo nhãn. Có thể dùng điều kiện hoặc từ khóa để nhận diện một số trường hợp đơn giản | Khi nguyên nhân có thể xác định bằng điều kiện rõ ràng, dữ liệu có cấu trúc và kết quả không phụ thuộc nhiều vào việc hiểu ngữ cảnh | Khó phân biệt những nguyên nhân có biểu hiện tương tự; các quy tắc từ khóa có thể bỏ sót hoặc phân loại nhầm những trường hợp phức tạp | Không |
-| **Workflow** | Rule tính metrics và lọc câu sai → AI gợi ý nhãn trong danh sách 8 nhãn kèm bằng chứng từ trace → Khoa duyệt, sửa hoặc từ chối nhãn → Rule tổng hợp số liệu → AI soạn nháp báo cáo → Khoa review và gửi | Khi công việc có các bước lặp lại, đầu vào và đầu ra xác định được, nhưng vẫn cần AI xử lý ngữ cảnh và con người kiểm tra các kết quả có tính judgment | AI gán nhãn sai, trích dẫn bằng chứng không hợp lệ hoặc người dùng duyệt kết quả quá nhanh mà không kiểm tra | Có |
+| **Workflow** | Rule tính metrics và lọc câu sai → AI gợi ý nhãn trong danh sách 8 nhãn kèm bằng chứng từ trace → Kỹ sư AI duyệt, sửa hoặc từ chối nhãn → Rule tổng hợp số liệu → AI soạn nháp báo cáo → Kỹ sư AI review và gửi | Khi công việc có các bước lặp lại, đầu vào và đầu ra xác định được, nhưng vẫn cần AI xử lý ngữ cảnh và con người kiểm tra các kết quả có tính judgment | AI gán nhãn sai, trích dẫn bằng chứng không hợp lệ hoặc người dùng duyệt kết quả quá nhanh mà không kiểm tra | Có |
 | **Agent** | Agent tự đọc kết quả eval, tìm nguyên nhân, khám phá nhóm lỗi mới, xác định lỗi ưu tiên và đề xuất hoặc thực hiện thay đổi prompt/pipeline | Khi cần xử lý nhiều bước phức tạp, có quyền truy cập công cụ và dữ liệu đầy đủ, đồng thời có cơ chế giám sát, đánh giá và rollback đáng tin cậy | Khó kiểm soát các hành động tự động; có thể xác định sai nguyên nhân, ưu tiên sai vấn đề hoặc tự thay đổi pipeline gây phát sinh lỗi mới | Không |
 
 **Mức chọn:** Workflow
@@ -294,7 +288,7 @@ Mức Workflow tận dụng được khả năng xử lý ngôn ngữ của LLM 
 | **Judgment** — con người cân nhắc, quyết định gì? | Kiểm tra nhãn AI đề xuất có phù hợp với câu trả lời và trace không; đánh giá bằng chứng có hợp lệ không; chấp nhận, chỉnh sửa hoặc từ chối nhãn. Quyết định nhóm lỗi nào cần ưu tiên xử lý và kiểm tra nội dung báo cáo trước khi gửi |
 | **Action** — hành động cuối cùng là gì, ai làm? | Duyệt các nhãn nguyên nhân. Script tổng hợp số lượng và tỷ lệ của từng nhóm lỗi. AI soạn nháp báo cáo dựa trên kết quả đã được tổng hợp. Kiểm tra số liệu, chỉnh sửa và gửi báo cáo cho Tech Lead/PM. AI không tự gửi báo cáo hoặc thay đổi prompt/pipeline |
 | **Outcome** — đo kết quả bằng gì? | (1) Giảm tổng thời gian từ 130 phút xuống dưới 60 phút/tuần. (2) Tỷ lệ nhãn AI gợi ý trùng với nhãn cuối cùng đạt ít nhất 80%. (3) Top 3 nhóm lỗi theo nhãn AI trùng với top 3 theo nhãn đã được duyệt. (4) Số câu hỏi lại từ Tech Lead/PM không tăng so với trước pilot |
-| **Input** — AI cần dữ liệu đầu vào gì mỗi lần chạy? Có sẵn không? | Kết quả eval xuất dạng JSON, bao gồm câu hỏi gốc, expected answer, actual answer và trace/tài liệu truy xuất. Ngoài ra cần danh sách 8 nhãn nguyên nhân, định nghĩa và ví dụ minh họa cho từng nhãn. Dữ liệu kết quả eval có thể xuất được ra JSON, danh sách nhãn được xây dựng từ việc Khoa đọc và ghi chú các câu sai thực tế |
+| **Input** — AI cần dữ liệu đầu vào gì mỗi lần chạy? Có sẵn không? | Kết quả eval xuất dạng JSON, bao gồm câu hỏi gốc, expected answer, actual answer và trace/tài liệu truy xuất. Ngoài ra cần danh sách 8 nhãn nguyên nhân, định nghĩa và ví dụ minh họa cho từng nhãn. Dữ liệu kết quả eval có thể xuất được ra JSON, danh sách nhãn được xây dựng từ việc Kỹ sư AI đọc và ghi chú các câu sai thực tế |
 | **Feedback** — lấy phản hồi ở đâu để cải thiện? | Phản hồi trực tiếp trên từng nhãn AI gợi ý bằng cách chấp nhận, chỉnh sửa hoặc từ chối. Mỗi tuần chọn 10 câu để tự gán nhãn mà không xem trước kết quả AI (Blind Review), sau đó đối chiếu với nhãn AI và nhãn cuối cùng. Những trường hợp phân loại sai được dùng để bổ sung định nghĩa, ví dụ và điều chỉnh prompt. |
 
 ### 6.4. Hai câu hỏi của Google PAIR
@@ -334,11 +328,11 @@ Như vậy, hệ thống ưu tiên không đưa ra kết luận sai một cách 
 | **Quy trình** | Chạy eval, lọc câu sai, gán nhãn nguyên nhân, gom nhóm, viết báo cáo, gửi |
 | **Bottleneck** | Đọc và gán nhãn khoảng 60 câu sai mất khoảng 60 phút; nhãn lệch giữa các lần gán |
 | **Impact** | 130 phút/tuần/kỹ sư; 4/10 tuần báo cáo đến sau planning |
-| **Success Metric** | (1) Thời gian từ 130 xuống dưới 60 phút; (2) nhãn AI gợi ý trùng nhãn cuối của Khoa từ 80% số câu trở lên (thí nghiệm ban đầu: 85%); (3) số câu hỏi lại của Tech Lead và PM không tăng so với 4 tuần trước pilot |
+| **Success Metric** | (1) Thời gian từ 130 xuống dưới 60 phút; (2) nhãn AI gợi ý trùng nhãn cuối của Kỹ sư AI từ 80% số câu trở lên (thí nghiệm ban đầu: 85%); (3) số câu hỏi lại của Tech Lead và PM không tăng so với 4 tuần trước pilot |
 | **Boundary** | AI không tự sửa prompt hay pipeline, không tự gửi, không đặt nhãn ngoài danh sách, không đưa nhận định không có trong dữ liệu |
-| **AI intervention point** | Sau khi lọc câu sai, trước khi Khoa đọc từng câu |
+| **AI intervention point** | Sau khi lọc câu sai, trước khi Kỹ sư AI đọc từng câu |
 | **Mức chọn** | Workflow |
-| **Rủi ro và người kiểm tra** | Nhãn sai, bằng chứng bịa, duyệt qua loa → Khoa duyệt từng nhãn và đối chiếu đoạn trace; trong pilot, mỗi tuần 10 câu ẩn nhãn AI để Khoa tự gán rồi đối chiếu |
+| **Rủi ro và người kiểm tra** | Nhãn sai, bằng chứng bịa, duyệt qua loa → Kỹ sư AI duyệt từng nhãn và đối chiếu đoạn trace; trong pilot, mỗi tuần 10 câu ẩn nhãn AI để Kỹ sư AI tự gán rồi đối chiếu |
 
 | Trường | v0 | v1 | Vì sao đổi |
 | --- | --- | --- | --- |
@@ -347,7 +341,7 @@ Như vậy, hệ thống ưu tiên không đưa ra kết luận sai một cách 
 
 ### Danh sách nhãn nguyên nhân v1 (8 nhãn)
 
-Ra từ việc Khoa đọc và ghi chú tự do 50 câu sai trước, rồi gom nhóm (open coding rồi axial coding).
+Ra từ việc Kỹ sư AI đọc và ghi chú tự do 50 câu sai trước, rồi gom nhóm (open coding rồi axial coding).
 
 | Nhãn | Định nghĩa ngắn |
 | --- | --- |
@@ -358,7 +352,7 @@ Ra từ việc Khoa đọc và ghi chú tự do 50 câu sai trước, rồi gom 
 | Bịa dù ngữ cảnh đủ | Câu trả lời có nội dung không nằm trong ngữ cảnh |
 | Câu hỏi ngoài phạm vi | Bot lẽ ra phải từ chối |
 | Đáp án tham chiếu sai hoặc cũ | Lỗi nằm ở bộ eval chứ không phải hệ thống |
-| Không chắc | Chưa đủ cơ sở; để Khoa xem kỹ |
+| Không chắc | Chưa đủ cơ sở; để Kỹ sư AI xem kỹ |
 
 ### Tiêu chí đánh giá gợi ý nhãn và nháp báo cáo
 
@@ -366,7 +360,7 @@ Ra từ việc Khoa đọc và ghi chú tự do 50 câu sai trước, rồi gom 
 | --: | --- | --- | --- |
 | 1 | Nhãn thuộc danh sách | Mọi nhãn nằm trong 8 nhãn; không chắc thì dùng "Không chắc" | AI tự đặt nhãn mới |
 | 2 | Bằng chứng truy được | Mỗi nhãn kèm đoạn trace hoặc tài liệu có trong input | Bằng chứng không có trong input |
-| 3 | Đúng ở nhóm lỗi lớn | Top 3 nhóm lỗi theo nhãn AI trùng top 3 theo nhãn đã duyệt của Khoa | Sai thứ tự hoặc thiếu nhóm trong top 3 |
+| 3 | Đúng ở nhóm lỗi lớn | Top 3 nhóm lỗi theo nhãn AI trùng top 3 theo nhãn đã duyệt của Kỹ sư AI | Sai thứ tự hoặc thiếu nhóm trong top 3 |
 | 4 | Báo cáo đọc được trong 3 phút | Dưới 300 từ, đủ 3 phần (kết quả tổng, top nguyên nhân kèm tỉ lệ, đề xuất sửa); số liệu khớp script | Dài, lan man, thiếu phần, hoặc có số AI tự tính |
 
 ---

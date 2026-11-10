@@ -9,7 +9,7 @@
 - Họ tên: Trần Việt Anh
 - MSSV: 2A202604029
 - Email trường (không bắt buộc, repo có thể để public):
-- Tên nhóm: Nhóm 3
+- Tên nhóm: Nhóm ABCD
 - Link repo nhóm: https://github.com/hgmdz1210/K5-L3B-DAY02-NhomABCD-DiscoveryProblemFraming
 
 ---

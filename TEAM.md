@@ -14,7 +14,7 @@
 |---:|---|---|---|---|
 | 1 | Đoàn Sỹ Hưng | 2A202603990 | Trưởng nhóm | https://github.com/hgmdz1210 |
 | 2 | Trần Việt Anh | 2A202604029 | Phụ trách kiểm chứng | https://github.com/Vietzanh |
-| 3 | | | | |
+| 3 | Từ Huy Bảo| 2A202604021 | Thành viên | thbao4545 |
 | 4 | | | | |
 
 Không ghi email hay số điện thoại vào bảng này, vì repo có thể để public.
@@ -88,4 +88,29 @@ Mỗi thành viên thêm một mục theo mẫu dưới đây, tiêu đề là `
 
 - Qua phần gom cluster và xây dựng OST, mình hiểu rằng các problem có thể xuất phát từ những lĩnh vực khác nhau nhưng vẫn có chung bản chất bottleneck. Việc phân nhóm giúp nhóm nhìn ra những pattern chung và tránh đánh giá các ý tưởng một cách rời rạc.
 - Ở CP6, điều quan trọng nhất mình học được là không phải bài toán nào cũng cần sử dụng mức AI can thiệp cao nhất. Cần xác định chính xác phần nào có thể giải quyết bằng quy trình hoặc Rule, phần nào thực sự cần khả năng hiểu ngữ cảnh của AI và phần nào nên giữ con người kiểm soát. Việc nhóm lựa chọn Workflow thay vì Agent cho thấy một giải pháp tốt không nhất thiết phải tự động hóa toàn bộ quy trình, mà cần cân bằng giữa hiệu quả, độ chính xác và khả năng kiểm soát rủi ro.
+### 2A202604021_TuHuyBao
+
+**Phần việc phụ trách:**
+
+- Pitch Problem Card (CP3).
+- Phản biện bài của bạn khác và nhận phản biện.
+- Problem Statement 
+
+**Đóng góp cụ thể** (mình đã làm gì, ra sản phẩm gì):
+
+- Pitch 3 candidate (text-to-SQL cho nhân viên marketing, phân tích khen/chê từ bình luận và tin nhắn fanpage, kiểm tra bản nháp theo quy tắc thương hiệu). Mỗi candidate có actor, bottleneck và số liệu đi kèm.
+- Nhận phản biện từ Ly, Hưng và Anh. Sửa bằng cách bổ sung phương án No AI/Rule làm baseline cho từng candidate, và thêm cơ chế kiểm chứng cho #1 (giải thích query bằng ngôn ngữ thường, chỉ đọc, bộ câu hỏi test có đáp án từ analyst). Sau đó đồng ý chuyển sang candidate của Hưng vì cả 3 câu hỏi chưa được trả lời đủ chắc.
+- Gom 12 candidate thành 4 cụm theo bản chất bottleneck
+- Viết Problem Statement v0 (Actor, Quy trình, Bottleneck, Impact, Success Metric, Boundary). Góp ý cho v1: thêm metric chất lượng (nhãn AI trùng nhãn cuối từ 80% trở lên, số câu hỏi lại của Tech Lead và PM không tăng) và giới hạn Actor ở team có từ 20 câu sai/tuần. Tham gia soạn danh sách 8 nhãn nguyên nhân và 4 tiêu chí đánh giá đầu ra của AI. Kết quả: v1 có 3 chỉ số thay vì 1, thêm AI intervention point và cột "Rủi ro và người kiểm tra".
+
+**Bằng chứng** (phần nào trong `group_report.md`, file nào trong `report/assets/`, commit nào):
+
+- `report/team/group_report.md`: mục Problem Card, mục Problem Statement v0/v1 và bảng "Thay đổi so với v0".
+- `report/individual/2A202604021_TuHuyBao.md`:
+
+**Điều mình học được từ phần nhóm:**
+
+- Một metric chỉ đo tốc độ là chưa đủ cần thêm metric chất lượng bên cạnh metric thời gian.
+- Phản biện là cách kiểm tra ý tưởng của chính mình. Cả 3 candidate của mình đều bị hỏi những điều chưa trả lời chắc (số sai mà người dùng không biết, đã có công cụ có sẵn, checklist có thể đủ). Việc nhận ra điều đó giúp mình đồng ý chọn candidate có actor và số liệu rõ hơn.
+- Phải luôn đặt phương án No AI/Rule làm baseline trước khi khẳng định cần AI.
 

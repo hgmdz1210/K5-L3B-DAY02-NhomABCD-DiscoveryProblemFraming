@@ -283,6 +283,7 @@ Bài toán không hoàn toàn phù hợp với Rule vì việc xác định nguy
 - Không chọn No AI vì quy trình gán nhãn thủ công hiện tại mất khoảng 60 phút cho 60 câu sai. Chuẩn hóa Google Sheets và dropdown giúp nhãn nhất quán hơn nhưng chưa giải quyết đáng kể thời gian phải đọc và phân tích từng câu.
 - Không chọn Rule vì Rule phù hợp để tính metrics, lọc câu sai và tổng hợp số liệu. Tuy nhiên, việc xác định câu sai do retrieval, tài liệu nguồn, chunking hay prompt cần hiểu ngữ cảnh của câu hỏi, câu trả lời và trace. Các điều kiện cố định khó xử lý đầy đủ những trường hợp này.
 - Không chọn Agent vì chưa cần giao toàn bộ quy trình cho AI tự thực hiện. Việc khám phá nguyên nhân mới, lựa chọn thứ tự ưu tiên và thay đổi prompt hoặc pipeline vẫn cần con người quyết định. Agent cũng làm tăng độ phức tạp và rủi ro không cần thiết cho bài toán hiện tại.
+
 Mức Workflow tận dụng được khả năng xử lý ngôn ngữ của LLM nhưng vẫn giữ được tính kiểm soát của Rule và Human-in-the-loop.
 
 ### 6.3. AI Canvas rút gọn
@@ -305,6 +306,7 @@ Bằng chứng:
   - Thí nghiệm ban đầu cho thấy tỷ lệ trùng nhãn chỉ đạt 72,5%. Sau khi bổ sung định nghĩa và 2 ví dụ cho mỗi nhãn, tỷ lệ đạt 85% trên 40 câu mới. Kết quả này cho thấy AI có khả năng hỗ trợ phân loại nhưng vẫn chưa đủ tin cậy để thay thế hoàn toàn người thực hiện.
   - Một số nguyên nhân dễ nhầm lẫn, cần đối chiếu bằng chứng trong trace và đánh giá theo ngữ cảnh.
   - Người thực hiện vẫn phải lựa chọn lỗi ưu tiên, kiểm tra nội dung báo cáo và quyết định gửi báo cáo.
+
 Vì vậy, AI đóng vai trò trợ lý phân tích: giúp giảm thời gian đọc và gán nhãn thủ công, còn người chịu trách nhiệm kiểm duyệt và ra quyết định cuối cùng.
 
 - AI sai kiểu nào tệ hơn, **báo nhầm** hay **bỏ sót**? Vì sao, và thiết kế đã xử lý thế nào:
@@ -318,6 +320,7 @@ Thiết kế xử lý rủi ro:
   - Người duyệt, chỉnh sửa hoặc từ chối tất cả nhãn AI đề xuất trước khi tổng hợp.
   - Mỗi tuần thực hiện Blind Review 10 câu để kiểm tra chất lượng gợi ý nhãn, tránh tình trạng người duyệt quá tin tưởng AI.
   - Nếu AI gán nhãn sai nhiều hoặc bằng chứng không hợp lệ, chuyển về Google Sheets với dropdown và script tổng hợp thủ công.
+
 Như vậy, hệ thống ưu tiên không đưa ra kết luận sai một cách chắc chắn hơn là cố gắng phân loại mọi trường hợp. Những trường hợp không đủ cơ sở sẽ được chuyển cho con người xử lý.
 
 

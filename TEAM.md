@@ -15,7 +15,7 @@
 | 1 | Đoàn Sỹ Hưng | 2A202603990 | Trưởng nhóm | https://github.com/hgmdz1210 |
 | 2 | Trần Việt Anh | 2A202604029 | Phụ trách kiểm chứng | https://github.com/Vietzanh |
 | 3 | Từ Huy Bảo| 2A202604021 | Thành viên | [thbao4545](https://github.com/thbao4545) |
-| 4 | | | | |
+| 4 |Lê Thị Ly |2A202603989 |Thành viên |https://github.com/LyLe10 |
 
 Không ghi email hay số điện thoại vào bảng này, vì repo có thể để public.
 

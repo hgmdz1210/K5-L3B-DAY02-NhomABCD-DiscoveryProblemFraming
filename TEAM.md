@@ -81,7 +81,7 @@ Mỗi thành viên thêm một mục theo mẫu dưới đây, tiêu đề là `
 
 **Bằng chứng** (phần nào trong `group_report.md`, file nào trong `report/assets/`, commit nào):
 
-- `report/team/group_report.md`: các mục 2.1 - Pitch, 2.2 - Cluster, 2.3 - OST, 2.4 - Chấm điểm shortlist; các mục trong CP6, bao gồm 6.1 - Ma trận độ mơ hồ × độ phức tạp, 6.2 - So sánh 4 mức, 6.3 - AI Canvas rút gọn, 6.4 - Hai câu hỏi của Google PAIR.
+- `report/team/group_report.md`: các mục 2.1 - Pitch, 2.2 - Cluster, 2.3 - OST, 2.4 - Chấm điểm shortlist; các mục trong CP6, bao gồm 6.1 - Ma trận độ mơ hồ × độ phức tạp, 6.2 - So sánh 4 mức, 6.3 - AI Canvas rút gọn, 6.4 - Hai câu hỏi của Google PAIR; đề xuất nội dung muc 9 - Hạn chế và hướng tiếp theo.
 - `report/individual/2A202604029_TranVietAnh.md`: scan 5 problem, top 3 Problem Cards, reflection.
 
 **Điều mình học được từ phần nhóm:**
